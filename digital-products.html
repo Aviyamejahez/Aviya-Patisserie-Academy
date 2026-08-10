@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <script>
+    /* Apply saved language IMMEDIATELY, before first paint, so the page never
+       flashes the wrong language/direction while script.js is still loading
+       (this was the main cause of the Hebrew "blank on load" issue). This is
+       safe even if localStorage is empty/unavailable — script.js re-applies
+       the same logic on DOMContentLoaded regardless. */
+    (function () {
+      try {
+        var l = localStorage.getItem("aviya-lang");
+        if (l === "he" || l === "en") {
+          document.documentElement.setAttribute("lang", l);
+          document.documentElement.setAttribute("dir", l === "he" ? "rtl" : "ltr");
+        }
+      } catch (e) { }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Products — Aviya Patisserie</title>
+  <meta name="description"
+    content="Israeli-style recipe packs, business templates, and guides for home bakers — available in English and Hebrew, manually delivered by email.">
+  <meta property="og:title" content="Digital Products — Aviya Patisserie">
+  <meta property="og:description" content="Israeli recipe packs, pricing tools, and guides for home bakers.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@400;600;700&family=Assistant:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=final-mobile-3">
+  <style>
+    /* ============================================================
+       RECIPE SEARCH & FILTER — scoped entirely to .recipe-filter-bar,
+       .recipe-search-input, .filter-bubble, .recipe-empty-state, and
+       .recipe-product-card below. Does not touch header, footer, global
+       layout, colors, fonts, other sections, or product cards outside
+       the recipe grid. Falls back gracefully if the brand CSS
+       variables aren't defined in styles.css.
+       ============================================================ */
+    .recipe-filter-bar {
+      margin: 0 auto 28px;
+      max-width: 760px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .recipe-search-wrap {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .recipe-search-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 20px;
+      border: 1px solid var(--line, rgba(58, 42, 32, 0.16));
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: .95rem;
+      background: var(--white, #fff);
+      color: var(--espresso, #3A2A20);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .recipe-search-input:focus {
+      outline: none;
+      border-color: var(--gold, #C9A15E);
+      box-shadow: 0 0 0 3px rgba(201, 161, 94, .18);
+    }
+
+    .recipe-filter-bubbles {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .filter-bubble {
+      font-family: inherit;
+      font-size: .85rem;
+      font-weight: 600;
+      padding: 9px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--line, rgba(58, 42, 32, 0.16));
+      background: var(--ivory, #FBF6EE);
+      color: var(--cocoa, #6B4226);
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .filter-bubble:hover {
+      border-color: var(--gold, #C9A15E);
+    }
+
+    .filter-bubble.is-active {
+      background: var(--cocoa, #6B4226);
+      border-color: var(--cocoa, #6B4226);
+      color: var(--ivory, #FBF6EE);
+    }
+
+    .recipe-empty-state {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--cocoa, #6B4226);
+      font-size: .95rem;
+    }
+
+    .recipe-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0 4px;
+    }
+
+    .recipe-tag {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 600;
+      line-height: 1.4;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--blush, #F4DED3);
+      color: var(--cocoa, #6B4226);
+      white-space: nowrap;
+    }
+
+    @media (max-width:640px) {
+      .recipe-search-wrap {
+        max-width: 100%;
+      }
+
+      .recipe-filter-bubbles {
+        gap: 8px;
+      }
+
+      .filter-bubble {
+        padding: 9px 16px;
+        font-size: .82rem;
+      }
+
+      .recipe-tag {
+        font-size: .7rem;
+        padding: 4px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main"><span class="lang-en">Skip to content</span><span class="lang-he">דלגי
+      לתוכן</span></a>
+
+  <header class="site-header">
+    <div class="nav container">
+      <a href="index.html" class="brand">Aviya Patisserie<span class="lang-en">Home Bakery Business Academy</span><span
+          class="lang-he">האקדמיה לעסקי אפייה מהבית</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html"><span class="lang-en">Home</span><span class="lang-he">בית</span></a>
+        <a href="digital-products.html" aria-current="page"><span class="lang-en">Digital Products</span><span
+            class="lang-he">מוצרים דיגיטליים</span></a>
+        <a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי אישי</span></a>
+        <a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמת עסק מלא</span></a>
+        <a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span class="lang-he">מיתוג
+            ואתרים</span></a>
+        <a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+            חינם</span></a>
+        <a href="about.html"><span class="lang-en">About</span><span class="lang-he">אודות</span></a>
+        <a href="contact.html"><span class="lang-en">Contact</span><span class="lang-he">צרי קשר</span></a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language switch">
+          <button data-lang-btn="en" aria-pressed="true">EN</button>
+          <button data-lang-btn="he" aria-pressed="false">HE</button>
+        </div>
+        <a href="contact.html" class="btn btn-gold btn-sm"><span class="lang-en">Apply Now</span><span
+            class="lang-he">להרשמה</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow lang-en" style="justify-content:center;">Digital Products</p>
+        <p class="eyebrow lang-he" style="justify-content:center;">מוצרים דיגיטליים</p>
+        <h1 class="lang-en">Recipes, templates &amp; guides to build your bakery</h1>
+        <h1 class="lang-he">מתכונים, תבניות ומדריכים לבניית עסק האפייה שלך</h1>
+      
+      </div>
+    </section>
+
+    <!-- ============ RECIPE PACKS ============ -->
+    <section class="section" id="recipes">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">Israeli Recipes, U.S. Adapted</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">מתכונים ישראליים, מותאמים לארה״ב</p>
+          <h2 class="lang-en">Digital Israeli Recipe</h2>
+          <h2 class="lang-he">מתכונים ישראליים דיגיטליים</h2>
+          <p class="lang-en">Every recipe is available in English or Hebrew and includes step-by-step
+            instructions, U.S. ingredient adaptations, Israeli ingredient alternatives, selling tips, packaging ideas,
+            suggested pricing guidance, and photography tips.</p>
+          <p class="lang-he">כל מתכון זמין בעברית או באנגלית וכולל הוראות שלב-אחר-שלב, התאמות לחומרי
+            גלם אמריקאיים, חלופות ישראליות, טיפים למכירה, רעיונות לאריזה, הנחיות תמחור וטיפים לצילום.</p>
+        </div>
+
+        <div class="recipe-filter-bar reveal">
+          <div class="recipe-search-wrap">
+            <input type="search" id="recipeSearchInput" class="recipe-search-input" placeholder="Search recipes..."
+              aria-label="Search recipes">
+          </div>
+          <div class="recipe-filter-bubbles" role="group" aria-label="Recipe category filters">
+            <button type="button" class="filter-bubble is-active" data-filter="all" aria-pressed="true"><span
+                class="lang-en">All</span><span class="lang-he">הכל</span></button>
+            <button type="button" class="filter-bubble" data-filter="cakes" aria-pressed="false"><span
+                class="lang-en">Cakes</span><span class="lang-he">עוגות</span></button>
+            <button type="button" class="filter-bubble" data-filter="cookies" aria-pressed="false"><span
+                class="lang-en">Cookies</span><span class="lang-he">עוגיות</span></button>
+            <button type="button" class="filter-bubble" data-filter="desserts" aria-pressed="false"><span
+                class="lang-en">Desserts</span><span class="lang-he">קינוחים</span></button>
+            <button type="button" class="filter-bubble" data-filter="doughs" aria-pressed="false"><span
+                class="lang-en">Doughs</span><span class="lang-he">בצקים</span></button>
+            <button type="button" class="filter-bubble" data-filter="dairy" aria-pressed="false"><span
+                class="lang-en">Dairy</span><span class="lang-he">חלבי</span></button>
+            <button type="button" class="filter-bubble" data-filter="pareve" aria-pressed="false"><span
+                class="lang-en">Pareve</span><span class="lang-he">פרווה</span></button>
+          </div>
+        </div>
+
+        
+        <p class="recipe-empty-state lang-en" id="recipeEmptyState" hidden>No recipes found. Try a different search or
+          filter.</p>
+        <p class="recipe-empty-state lang-he" id="recipeEmptyStateHe" hidden>לא נמצאו מתכונים. נסי חיפוש או סינון אחר.
+        </p>
+
+        <div class="recipe-grid" id="recipeGrid">
+
+          <!-- RECIPE 1 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="פאי שוקולד pie chocolate fudgy ganache dairy dessert קינוח שוקולד עוגה" data-desc-en="Pâte sablée tart with a fudgy chocolate filling and finished with a
+            chocolate ganache topping." data-desc-he="קלתית בצק פריך עם מלית שוקולד פאדג'ית וטופינג של גנאש שוקולד"
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/chocolate.jpg');" role="img"
+              aria-label="Photo placeholder: chocolate pie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Chocolate pie</h3>
+              <h3 class="lang-he">פאי שוקולד</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$119<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+
+          <!-- RECIPE 2 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="basque cheesecake shavuot dairy dessert קינוח גבינה עוגת גבינה באסקית עוגה"
+            data-desc-en="Basque cheesecake (or San Sebastian) is a cake without a base, browned on top and soft and creamy on the inside, which gives it a special flavor."
+            data-desc-he="עוגת גבינה באסקית (או סאן סבסטיאן) היא עוגה ללא בסיס, שחומה מלמעלה ורכה וקרמית מבפנים, מה שנותן לה טעם מיוחד."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/basque.jpg');" role="img"
+              aria-label="Photo placeholder: basque cheesecake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Basque cheesecake</h3>
+              <h3 class="lang-he">עוגת גבינה באסקית</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$49<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+
+          <!-- RECIPE 3 -->
+          <div class="recipe-product-card reveal" data-categories="cakes desserts dairy"
+            data-search="ביסקיוויטים שמנת תותים biscuits cream strawberry dairy dessert קינוח שמנת תותים עוגה"
+            data-desc-en="Strawberry cream biscuits are light and fluffy, perfect for a sweet treat."
+            data-desc-he="עוגה מושלמת ומרעננת, עוגה רכה ומפתיעה עם שכבות של ביסקיוויטים וקרם שמנת תותים."
+            data-desc-en="A perfect and refreshing cake, a soft and surprising cake with layers of biscuits and strawberry cream."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/biscuit.jpg');" role="img"
+              aria-label="Photo placeholder: strawberry cream biscuits">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Strawberry cream biscuits</h3>
+              <h3 class="lang-he">ביסקיוויטים שמנת תותים</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$49<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+
+          <!-- RECIPE 4 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy pareve"
+            data-search="עוגת שוקולד ליום הולדת birthday chocolate cake dairy dessert קינוח שוקולד עוגה"
+            data-desc-en="Juicy chocolate cake with a layer of soft chocolate ganache and vanilla Chantilly cream drizzles."
+            data-desc-he="עוגת שוקולד עסיסית עם שכבת גנאש שוקולד רך וזילופי קרם שנטילי וניל."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/birthday\ chocolate.jpg');" role="img"
+              aria-label="Photo placeholder: Birthday chocolate cake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Birthday chocolate cake</h3>
+              <h3 class="lang-he">עוגת שוקולד ליום הולדת</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Pareve</span><span class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">פרווה</span><span class="recipe-tag">עוגות</span></div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+
+          <!-- RECIPE 5 -->
+          <div class="recipe-product-card reveal" data-categories="cakes desserts dairy pareve"
+            data-search="בראוניז שוקולד brownie chocolate fudgy ganache dairy dessert קינוח שוקולד עוגה"
+            data-desc-en="Rich chocolate brownie cubes, soft and moist on the inside with a crispy crust on the outside."
+            data-desc-he="קוביות בראוניז שוקולד עשירים, נימוחים ולחים מבפנים עם קראסט פריך מבחוץ."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/brownie.jpg');" role="img"
+              aria-label="Photo placeholder: chocolate brownie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Chocolate brownie</h3>
+              <h3 class="lang-he">בראוניז שוקולד</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Pareve</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">פרווה</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+
+          <!-- RECIPE 6 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="עוגת גבינה יפנית japanese cheesecake dairy dessert קינוח גבינה עוגה"
+            data-desc-en="An airy, melt-in-your-mouth cheesecake." data-desc-he="עוגת גבינה אוורירית ונמסה בפה. "
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/japans.jpg');" role="img"
+              aria-label="Photo placeholder: japanese cheesecake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Japanese cheesecake</h3>
+              <h3 class="lang-he">עוגת גבינה יפנית</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+
+          <!-- RECIPE 7 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="גבינה שבועות classic cheesecake dairy dessert קינוח גבינה עוגה עוגת גבינה קלאסית"
+            data-desc-en="Classic, soft baked cheesecake." data-desc-he="עוגת גבינה קלאסית אפויה ורכה."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/cheesecake.jpg');" role="img"
+              aria-label="Photo placeholder: classic cheesecake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Classic cheesecake</h3>
+              <h3 class="lang-he">עוגת גבינה קלאסית</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$129<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 8 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="פאי גבינה רימונים pie pomegranate cheese dairy dessert קינוח פאי גבינה עוגה"
+            data-desc-en="Pâté sable tart with soft cheese filling, vanilla Chantilly cream drizzle and pomegranates."
+            data-desc-he="קלתית בצק פריך עם מלית גבינה רכה, זילופי קרם שנטילי וניל ורימונים."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/cheese\ pie.jpg');" role="img"
+              aria-label="Photo placeholder: cheese pie and pomegranate">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Cheese Pie and pomegranate</h3>
+              <h3 class="lang-he">פאי גבינה ורימונים</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 9 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="פאי לימון pie lemon tart dairy dessert קינוח לימון עוגה"
+            data-desc-en="Pâté sable tart with a lemon filling and burnt meringue drizzle."
+            data-desc-he="קלתית בצק פריך עם מלית מלית לימון חמצמצה וזילופי מרנג שרוף."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/lemon.jpg');" role="img"
+              aria-label="Photo placeholder: lemon pie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Lemon pie</h3>
+              <h3 class="lang-he">פאי לימון ומרנג</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 10 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="פאי פקאן מייפל pie pecan tart dairy dessert קינוח פקאן עוגה"
+            data-desc-en="A pâté sable tart with a sweet pecan and maple filling."
+            data-desc-he="קלתית בצק פריך עם מלית פקאן ומייפל מתוקה" data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/pecan.jpg');" role="img"
+              aria-label="Photo placeholder: pecan maple pie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Pecan maple pie</h3>
+              <h3 class="lang-he">פאי פקאן ומייפל</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 11 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="פאי שוקולד pie chocolate salted caramel dairy dessert קינוח שוקולד פאי קרמל מלוח עוגה"
+            data-desc-en="Cocoa shortcrust pie, salted caramel and chocolate creme."
+            data-desc-he="פאי מבצק פריך קקאו, קרמל מלוח וקרמו שוקולד." data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/salted\ caramel.jpg');" role="img"
+              aria-label="Photo placeholder: chocolate and salted caramel pie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Chocolate and salted caramel pie</h3>
+              <h3 class="lang-he">פאי שוקולד וקרמל מלוח</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 12 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy pareve"
+            data-search="פאי תפוחים ושטרוייזל פרווה apple pie with streusel dairy dessert pareve קינוח תפוחים פאי שטרוייזל עוגה"
+            data-desc-en="Pâte sablée tart with a rich and juicy apple filling and a crispy streusel crumb coating."
+            data-desc-he="פאי מבצק פריך עם מלית תפוחים עשירה ועסיסית וציפוי פירורי שטרוייזל פריכים."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/apple.jpg');" role="img"
+              aria-label="Photo placeholder: apple and streusel pie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Apple and streusel pie</h3>
+              <h3 class="lang-he">פאי תפוחים ושטרוייזל</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span><span class="recipe-tag">Pareve</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגות</span><span class="recipe-tag">פרווה</span></div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 13 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="פאי שקדים ואגסים almond and pear pie wine dairy dessert פאי שקדים אגסים ביין עוגה"
+            data-desc-en="Pâte sablée tart with baked almond cream filling and pears in wine.."
+            data-desc-he="קלתית בצק פריך עם מלית קרם שקדים אפויה ואגסים ביין."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/almond.jpg');" role="img"
+              aria-label="Photo placeholder: almond and pear pie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Almond and pear pie</h3>
+              <h3 class="lang-he">פאי שקדים ואגסים</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 14 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="פאי שוקולד pie chocolate fudgy ganache pistachio dairy dessert קינוח שוקולד פיסטוק עוגה"
+            data-desc-en="Chocolate pâte sablée tart with roasted pistachio filling and chocolate filling."
+            data-desc-he="קלתית בצק פריך עם מלית פיסטוק קלויה ומלית שוקולד" data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/pistachio.jpg');" role="img"
+              aria-label="Photo placeholder: chocolate and pistachio pie">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Chocolate and pistachio pie</h3>
+              <h3 class="lang-he">פאי שוקולד ופיסטוק</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 15 -->
+          <div class="recipe-product-card reveal" data-categories="cakes pareve"
+            data-search="בננה פקאן פרווה עוגת בננות שוקולד pie chocolate chips banana cake bread pecan vegan dairy dessert שוקולד צ'יפ עוגה"
+            data-desc-en="Soft and moist banana cake with pecans and chocolate chips. (Vegan option)."
+            data-desc-he="עוגת בננות רכה ועסיסית עם פקאן ושוקולד צ'יפ. (אופציה לטבעוני)"
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/banana.jpg');" role="img"
+              aria-label="Photo placeholder: banana cake banana bread">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Banana cake (Banana bread)</h3>
+              <h3 class="lang-he">עוגת בננה</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Pareve</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">עוגות</span></div>
+              <p class="recipe-product-price">$49<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 16 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy"
+            data-search="numbers cake birthday cake dairy dessert עוגת מספרים יום הולדת עוגה"
+            data-desc-en="Layers of crispy shortcrust pastry with vanilla Chantilly cream and decorations of your choice."
+            data-desc-he="שכבות של בצק פריך קריספי עם קרם שנטילי וניל וקישוטים לבחירה."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/numberscake.jpg');" role="img"
+              aria-label="Photo placeholder: numbers cake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Numbers Cake</h3>
+              <h3 class="lang-he">עוגת מספרים</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span>
+              </div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 17 -->
+          <div class="recipe-product-card reveal" data-categories="cookies desserts dairy"
+            data-search="פאי שוקולד pie chocolate fudgy ganache dairy dessert קינוח שוקולד עוגה"
+            data-desc-en="Pecan cookies with a crispy texture and a rich, nutty flavor."
+            data-desc-he="עוגיות פקאן פריכות וממכרות עם טעם אגוזי עשיר." data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/pecancookie.jpg');" role="img"
+              aria-label="Photo placeholder: pecan cookies">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Pecan Cookies</h3>
+              <h3 class="lang-he">עוגיות פקאן</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cookies</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגיות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$49<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 18 -->
+          <div class="recipe-product-card reveal" data-categories="cakes dairy pareve"
+            data-search="פאי שוקולד pie chocolate fudgy ganache dairy dessert קינוח שוקולד עוגה"
+            data-desc-en="Chocolate cake base for decorated cakes. Includes a recipe for a suitable cream."
+            data-desc-he="בסיס עוגת שוקולד לעוגות מעוצבות. כולל מתכון לקרם מתאים."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/basechocolate.jpg');" role="img"
+              aria-label="Photo placeholder: chocolate base for custom cakes">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Chocolate Base for Custom Cakes</h3>
+              <h3 class="lang-he">בסיס עוגת שוקולד לעוגה מעוצבת</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Pareve</span><span
+                  class="recipe-tag">Dairy</span><span class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">חלבי</span><span class="recipe-tag">עוגות</span></div>
+              <p class="recipe-product-price">$149<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 19 -->
+          <div class="recipe-product-card reveal" data-categories="desserts dairy"
+            data-search="hamantashen chocolate dates dairy dessert אוזני המן שוקולד פרג תמרים "
+            data-desc-en="Basic shortcrust pastry for Hamantashen. Includes fillings."
+            data-desc-he="בצק פריך בסיסי לאוזני המן. כולל מילויים. " data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/haman.jpg');" role="img"
+              aria-label="Photo placeholder: hamantashen">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Hamantashen</h3>
+              <h3 class="lang-he">אוזני המן</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 20 -->
+          <div class="recipe-product-card reveal" data-categories="doughs desserts dairy"
+            data-search=" בצק רבוך crumble puffs choux pastry dairy dessert קינוח פחזניה פחזניות קראמבל קרם וניל"
+            data-desc-en="Choux pastry with a thin crumble topping. Includes a recipe for the cream and thin caramel topping."
+            data-desc-he="פחזניות בצק רבוך עם ציפוי קראמבל דק. כולל מתכון לקרם ולציפוי קרמל דק."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/puffs.jpg');" role="img"
+              aria-label="Photo placeholder: crumble puffs (choux pastry)">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Crumble puffs (Choux pastry)</h3>
+              <h3 class="lang-he">פחזניות קראמבל (בצק רבוך)</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Doughs</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">בצקים</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 21 -->
+          <div class="recipe-product-card reveal" data-categories="cakes pareve"
+            data-search="mapel pecan chocolate chip dairy pareve dessert קינוח שוקולד ציפ' עוגת מייפל פקאן עוגת טורט פרווה עוגה"
+            data-desc-en="A fluffy, soft torte cake like a cloud, with options for toppings."
+            data-desc-he="עוגת טורט פלאפית ורכה כמו ענן, עם אופציות לתוספות."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/torte.jpg');" role="img"
+              aria-label="Photo placeholder: torte cake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Torte Cake</h3>
+              <h3 class="lang-he">עוגת טורט</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Pareve</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">עוגות</span></div>
+              <p class="recipe-product-price">$49<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 22 -->
+          <div class="recipe-product-card reveal" data-categories="cakes desserts dairy"
+            data-search="honey roll cream vanilla rosh hashana dairy dessert Bienenstich roulade Bee sting roulade  ראש השנה עוקץ הדבורה  דבש קינוח רולדה"
+            data-desc-en="Vanilla roulade with a filling of vanilla Chantilly cream and honey and topped with caramelized almonds."
+            data-desc-he="רולדת וניל עם מילוי של קרם שנטילי וניל ודבש ובציפוי של שקדים מקורמלים."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/honeyrolada.jpg');" role="img"
+              aria-label="Photo placeholder: Bienenstich roulade (Bee sting roulade)">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Bienenstich roulade (Bee sting roulade)</h3>
+              <h3 class="lang-he">רולדת עוקץ הדבורה</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span><span class="recipe-tag">Desserts</span><span
+                  class="recipe-tag">Pareve</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגות</span><span class="recipe-tag">קינוחים</span><span
+                  class="recipe-tag">פרווה</span></div>
+              <p class="recipe-product-price">$99<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 23 -->
+          <div class="recipe-product-card reveal" data-categories="cakes pareve"
+            data-search="carrot cake cinnamon walnuts pareve dessert עוגת גזר עוגה קינמון ואגוזים אגוזים עוגה רכה "
+            data-desc-en="Soft and juicy carrot cake with cinnamon and walnuts."
+            data-desc-he="עוגת גזר רכה ועסיסית עם קינמון ואגוזים." data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/carrot.jpg');" role="img"
+              aria-label="Photo placeholder: carrot cake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Carrot Cake</h3>
+              <h3 class="lang-he">עוגת גזר</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Pareve</span><span
+                  class="recipe-tag">Cakes</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">עוגות</span></div>
+              <p class="recipe-product-price">$49<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 24 -->
+          <div class="recipe-product-card reveal" data-categories=" desserts dairy"
+            data-search="creme vanilla brulee caramel sugar dairy dessert קינוח ברולה וניל סוכר מקורמל"
+            data-desc-en="Vanilla crème brulee with a crust of caramelized sugar."
+            data-desc-he="קרם ברולה וניל עם קראסט של סוכר מקורמל" data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/brulle.jpg');" role="img"
+              aria-label="Photo placeholder: creme brûlée">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Brûlée</h3>
+              <h3 class="lang-he">קרם ברולה</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$129<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 25 -->
+          <div class="recipe-product-card reveal" data-categories="cookies desserts dairy"
+            data-search="מחית פיסטוק pistachio soft cookies dairy dessert whitechocolate praline עוגיות פיסטוק רכות עם פרלין שוקולד"
+            data-desc-en="Soft and addictive pistachio cookies with pistachio praline. Includes a recipe for chocolate praline and homemade pistachio puree."
+            data-desc-he="עוגיות פיסטוק רכות וממכרות עם פרלין פיסטוק. כולל מתכון לפרלין שוקולד ולמחית פיסטוק ביתית."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/pistacookie.jpg');" role="img"
+              aria-label="Photo placeholder: soft pistachio cookies">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Soft pistachio cookies</h3>
+              <h3 class="lang-he">עוגיות פיסטוק רכות</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cookies</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגיות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$129<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 26 -->
+          <div class="recipe-product-card reveal" data-categories="cookies desserts dairy"
+            data-search="לבן שוקולד amsterdam cookies white chocolate praline dairy dessert קינוח שוקולד עוגיות אמסטרדם שוקולד לבן פרלין"
+            data-desc-en="Soft Amsterdam cookies with white chocolate praline filling."
+            data-desc-he="עוגיות אמסטרדם רכות עם מילוי של פרלין שוקולד לבן." data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/amserdam.jpg');" role="img"
+              aria-label="Photo placeholder: Amsterdam cookies">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Amsterdam cookies</h3>
+              <h3 class="lang-he">עוגיות אמסטרדם</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cookies</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגיות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$119<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 27 -->
+          <div class="recipe-product-card reveal" data-categories="cakes pareve doughs dairy"
+            data-search="שמרים שוקולד babka dough yeast chocolate dairy dessert בצק דפוף בצק שמרים פרווה חלבי עוגת שמרים קינוח שוקולד עוגה "
+            data-desc-en="Special yeast dough, dough that remains soft even after several days. My best-selling cake. Includes a recipe for my special chocolate filling."
+            data-desc-he="בצק שמרים מיוחד, בצק שנשאר רך גם לאחר מספר ימים. העוגה הכי נמכרת שלי. כולל מתכון של המלית שוקולד המיוחדת שלי."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/babkacake.jpg');" role="img"
+              aria-label="Photo placeholder: babka cake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Babka cake</h3>
+              <h3 class="lang-he">עוגת שמרים</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Doughs</span><span class="recipe-tag">Cakes</span><span
+                  class="recipe-tag">Pareve</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגות</span><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">בצקים</span></div>
+              <p class="recipe-product-price">$199<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 28 -->
+          <div class="recipe-product-card reveal" data-categories="cookies desserts dairy"
+            data-search="מגולגלות תמרים rolled dates nuts cookies dairy dessert תמרים ואגוזים עוגיות קינוח תמרים"
+            data-desc-en="Rolled cookies with dates and nuts. Including various fillings."
+            data-desc-he="עוגיות מגולגלות תמרים ואגוזים. כולל מילויים שונים."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/dates.jpg');" role="img"
+              aria-label="Photo placeholder: rolled date cookies">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Rolled Date Cookies </h3>
+              <h3 class="lang-he">מגולגלות תמרים</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cookies</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגיות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 29 -->
+          <div class="recipe-product-card reveal" data-categories="cakes desserts dairy"
+            data-search="שוקולד design cake custom cake dairy dessert בסיס קינוח שוקולד עוגה מעוצבת פרווה חלבי קרם לעיטוף עוגות  קינוח קינוחים"
+            data-desc-en="A base cake for a decorated cake. Includes a recipe for creams and fillings."
+            data-desc-he="עוגת בסיס לעוגה מעוצבת. כולל מתכון לקרמים ולמילויים."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/tortebase.jpg');" role="img"
+              aria-label="Photo placeholder: Vanilla Cake Base for Custom Cakes">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Vanilla Cake Base for Custom Cakes</h3>
+              <h3 class="lang-he">עוגת וניל- בסיס לעוגה מעוצבת</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cakes</span><span class="recipe-tag">Pareve</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">עוגות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$149<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 30 -->
+          <div class="recipe-product-card reveal" data-categories="doughs pareve"
+            data-search="challahs dough pastry challah pareve dough yeast baking בצק שמרים פרווה בצק לחלות בצק לעוגות שמרים עוגת שמרים חלה"
+            data-desc-en="Perfect dough for perfect challahs." data-desc-he="בצק מושלם לחלות מושלמות."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/challa.jpg');" role="img"
+              aria-label="Photo placeholder: Challah dough">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Challah dough</h3>
+              <h3 class="lang-he">בצק לחלות</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Pareve</span><span
+                  class="recipe-tag">Doughs</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">בצקים</span></div>
+              <p class="recipe-product-price">$149<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 31 -->
+          <div class="recipe-product-card reveal" data-categories="cookies desserts dairy"
+            data-search="חלב שוקולד soft cookies cookie pecan and coffee milk chocolate praline dairy dessert קינוח שוקולד עוגיות קפה ופקן עוגיית עוגיה שוקולד חלב עוגיות רכות חלבי פרלין"
+            data-desc-en="Soft coffee and pecan cookies with milk chocolate praline."
+            data-desc-he="עוגיות קפה ופקאן רכות עם פרלין שוקולד חלב." data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE"
+            data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/coffepecan.jpg');" role="img"
+              aria-label="Photo placeholder: Soft Coffee and Pecan Cookies">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Soft Coffee and Pecan Cookies</h3>
+              <h3 class="lang-he">עוגיות קפה ופקאן רכות</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cookies</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגיות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$129<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 32 -->
+          <div class="recipe-product-card reveal" data-categories="cakes desserts pareve"
+            data-search="עוגת דבש honey cake pareve dessert קינוח דבש עוגה"
+            data-desc-en="Soft and juicy honey and spice cake. Includes options for toppings."
+            data-desc-he="עוגת דבש ותבלינים רכה ועסיסית. כולל אופציות לתוספות."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/cakehoney.jpg');" role="img"
+              aria-label="Photo placeholder: Honey Cake">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Honey Cake</h3>
+              <h3 class="lang-he">עוגת דבש</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Pareve</span><span
+                  class="recipe-tag">Cakes</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">פרווה</span><span
+                  class="recipe-tag">עוגות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$69<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+          <!-- RECIPE 33 -->
+          <div class="recipe-product-card reveal" data-categories="cookies desserts dairy"
+            data-search="חלב שוקולד soft cookies cookie walnut milk chocolate praline dairy dessert קינוח שוקולד עוגיות קפה אגוזים אגוזי מלך עוגיית עוגיה שוקולד חלב עוגיות רכות חלבי פרלין"
+            data-desc-en="Soft coffee and pecan cookies with milk chocolate praline."
+            data-desc-en="Milk chocolate and walnut cookies." data-desc-he="עוגיות שוקולד חלב ואגוזי מלך."
+            data-paypal-en="PAYPAL_LINK_ENGLISH_RECIPE" data-paypal-he="PAYPAL_LINK_HEBREW_RECIPE">
+            <div class="recipe-product-img" style="background-image: url('images/walnut.jpg');" role="img"
+              aria-label="Photo placeholder: walnut chocolate cookies">
+            </div>
+            <div class="recipe-product-body">
+              <h3 class="lang-en">Walnut Chocolate Cookies</h3>
+              <h3 class="lang-he">עוגיות שוקולד חלב ואגוזים</h3>
+              <div class="recipe-tags lang-en"><span class="recipe-tag">Dairy</span><span
+                  class="recipe-tag">Cookies</span><span class="recipe-tag">Desserts</span></div>
+              <div class="recipe-tags lang-he"><span class="recipe-tag">חלבי</span><span
+                  class="recipe-tag">עוגיות</span><span class="recipe-tag">קינוחים</span></div>
+              <p class="recipe-product-price">$129<!-- REPLACE: set your price --></p>
+              <button type="button" class="btn btn-primary btn-sm btn-block recipe-buy-btn"><span class="lang-en">View
+                  Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BUSINESS TEMPLATES ============ -->
+    <section class="section section--alt" id="templates">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">Stay Organized</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">שמרי על סדר</p>
+          <h2 class="lang-en">Business Templates</h2>
+          <h2 class="lang-he">תבניות עסקיות</h2>
+          <p class="lang-en">Practical spreadsheets and scripts built specifically for home bakery workflows.</p>
+          <p class="lang-he">גיליונות וסקריפטים מעשיים שנבנו במיוחד לתהליכי עבודה של עסק אפייה ביתי.</p>
+        </div>
+
+        <div class="grid grid-3">
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <span class="badge lang-en">Template</span><span class="badge lang-he">תבנית</span>
+            <h3 class="lang-en">Pricing Calculator (Excel)</h3>
+            <h3 class="lang-he">מחשבון תמחור (Excel)</h3>
+            <p class="small muted lang-en">Calculate ingredient, labor, and overhead costs to price every item with
+              confidence.</p>
+            <p class="small muted lang-he">חישוב עלויות חומרי גלם, עבודה ותקורה כדי לתמחר כל פריט בביטחון.</p>
+            <p class="price">$99.00</p>
+            <button type="button" class="btn btn-primary btn-block template-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <span class="badge lang-en">Template</span><span class="badge lang-he">תבנית</span>
+            <h3 class="lang-en">Order Tracker</h3>
+            <h3 class="lang-he">מעקב הזמנות</h3>
+            <p class="small muted lang-en">Track every order, deposit, deadline, and delivery in a simple system.</p>
+            <p class="small muted lang-he">מעקב אחר כל הזמנה, מקדמה, תאריך יעד ומשלוח במערכת קלה ונוחה לשימוש.</p>
+            <p class="price">$199.00</p>
+            <button type="button" class="btn btn-primary btn-block template-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <span class="badge lang-en">Template</span><span class="badge lang-he">תבנית</span>
+            <h3 class="lang-en">Weekly Kitchen Planner</h3>
+            <h3 class="lang-he">תכנון מטבח שבועי</h3>
+            <p class="small muted lang-en">Plan baking days, prep, and deliveries so nothing gets missed. A simple and effective system.</p>
+            <p class="small muted lang-he">תכנון ימי אפייה, הכנות ומשלוחים כדי שדבר לא יישכח. מערכת נוחה וקלה לשימוש.</p>
+            <p class="price">$249.00</p>
+            <button type="button" class="btn btn-primary btn-block template-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+
+          <!-- <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <span class="badge lang-en">Template</span><span class="badge lang-he">תבנית</span>
+            <h3 class="lang-en">Ingredient Cost Calculator</h3>
+            <h3 class="lang-he">מחשבון עלות חומרי גלם</h3>
+            <p class="small muted lang-en">Know the exact cost of every ingredient you buy, down to the gram or ounce.
+            </p>
+            <p class="small muted lang-he">דעי את העלות המדויקת של כל מרכיב שאת קונה, עד לגרם או האונקיה.</p>
+            <p class="price">$0.00</p>
+            <button type="button" class="btn btn-primary btn-block template-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>-->
+
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <span class="badge lang-en">Template</span><span class="badge lang-he">תבנית</span>
+            <h3 class="lang-en">Customer Message Scripts</h3>
+            <h3 class="lang-he">תסריטי הודעות ללקוחות</h3>
+            <p class="small muted lang-en">Ready-to-use scripts for inquiries, quotes, deposits, and delivery reminders.
+            </p>
+            <p class="small muted lang-he">תסריטים מוכנים לשימוש לפניות, הצעות מחיר, מקדמות ותזכורות משלוח.</p>
+            <p class="price">$199.00</p>
+            <button type="button" class="btn btn-primary btn-block template-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <span class="badge lang-en">Bundle</span><span class="badge lang-he">חבילה</span>
+            <h3 class="lang-en">Home Bakery Organization Bundle</h3>
+            <h3 class="lang-he">חבילת ארגון עסק אפייה ביתי</h3>
+            <p class="small muted lang-en">All the templates together, at a better price than buying separately. Recommended!</p>
+            <p class="small muted lang-he">כל התבניות יחד, במחיר משתלם יותר מרכישה נפרדת. מומלץ!</p>
+            <p class="price">$499.00</p>
+            <button type="button" class="btn btn-primary btn-block template-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GUIDES ============ -->
+    <section class="section" id="guides">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">Learn At Your Own Pace</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">למידה בקצב שלך</p>
+          <h2 class="lang-en">Guides &amp; Mini Resources</h2>
+          <h2 class="lang-he">מדריכים ומשאבים קצרים</h2>
+        </div>
+        <div class="grid grid-4">
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <h3 class="lang-en">Cake Photography Guide from Your Phone</h3>
+            <h3 class="lang-he">מדריך צילום עוגות מהנייד שלך</h3>
+            <p class="small muted lang-en">Shoot phone photos that make clients want to order.</p>
+            <p class="small muted lang-he">צלמי תמונות יפות ואיכותיות בנייד שלך שייגרמו ללקוחות לרצות להזמין.</p>
+            <p class="price">$49.00</p>
+            <button type="button" class="btn btn-outline btn-block btn-sm guide-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <h3 class="lang-en">Instagram Marketing and Advertising Guide</h3>
+            <h3 class="lang-he">מדריך שיווק ופירסום באינסטגרם</h3>
+            <p class="small muted lang-en">A simple content system for home bakeries — no ad budget needed.</p>
+            <p class="small muted lang-he">מערכת תוכן פשוטה לעסקי אפייה ביתיים — ללא צורך בתקציב פרסום.</p>
+            <p class="price">$49.00</p>
+            <button type="button" class="btn btn-outline btn-block btn-sm guide-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+          <!--<div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <h3 class="lang-en">Home Bakery Starter Kit</h3>
+            <h3 class="lang-he">ערכת התחלה לעסק אפייה ביתי</h3>
+            <p class="small muted lang-en">Everything a brand-new home baker needs to take the first step.</p>
+            <p class="small muted lang-he">כל מה שאופת בית חדשה צריכה כדי לעשות את הצעד הראשון.</p>
+            <p class="price">$49.00</p>
+            <button type="button" class="btn btn-outline btn-block btn-sm guide-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>-->
+          <div class="card product-card reveal" data-paypal="PAYPAL_LINK_ENGLISH_RECIPE">
+            <h3 class="lang-en">First 30 Days Home Bakery Plan</h3>
+            <h3 class="lang-he">תוכנית 30 הימים הראשונים לבניית העסק</h3>
+            <p class="small muted lang-en">A day-by-day roadmap for your first month in business.</p>
+            <p class="small muted lang-he">מפת דרכים יום-אחר-יום לחודש הראשון בעסק.</p>
+            <p class="price">$49.00</p>
+            <button type="button" class="btn btn-outline btn-block btn-sm guide-buy-btn"><span class="lang-en">View
+                Details &amp; Buy</span><span class="lang-he">לפרטים ורכישה</span></button>
+          </div>
+        </div>
+        <p class="note lang-en" style="margin-top:28px;"><strong>Note:</strong> Digital products are for personal
+          business use only and may not be copied, shared, or resold. See our <a href="legal.html">Legal &amp;
+            Policies</a> page for full terms.</p>
+        <p class="note lang-he" style="margin-top:28px;"><strong>הערה:</strong> המוצרים הדיגיטליים מיועדים לשימוש עסקי
+          אישי בלבד ואין להעתיק, לשתף או למכור אותם מחדש. לפרטים מלאים ראי <a href="legal.html">תנאים ומדיניות</a>.</p>
+      </div>
+    </section>
+
+    <section class="section section--blush">
+      <div class="container">
+        <div class="cta-banner reveal">
+          <h2 class="lang-en">Not sure where to start?</h2>
+          <h2 class="lang-he">לא בטוחה מאיפה להתחיל?</h2>
+          <p class="lang-en">Download our free guide, 5 Steps to Start Selling Cakes From Home, and take the first step
+            with confidence.</p>
+          <p class="lang-he">הורידי את המדריך החינמי שלנו, 5 צעדים להתחיל למכור עוגות מהבית, ועשי את הצעד הראשון
+            בביטחון.</p>
+          <div class="btn-row"><a href="free-resources.html" class="btn btn-gold"><span class="lang-en">Download the
+                Free Guide</span><span class="lang-he">הורדת המדריך החינמי</span></a></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand" style="color:var(--ivory);">Aviya Patisserie</div>
+          <p class="lang-en">Home Bakery Business Academy — helping women turn their baking dream into an organized,
+            profitable home bakery business.</p>
+          <p class="lang-he">האקדמיה לעסקי אפייה מהבית — עוזרת לנשים להפוך את חלום האפייה שלהן לעסק אפייה ביתי מאורגן
+            ורווחי.</p>
+        </div>
+        <div>
+          <h4 class="lang-en">Explore</h4>
+          <h4 class="lang-he">ניווט</h4>
+          <ul>
+            <li><a href="digital-products.html"><span class="lang-en">Digital Products</span><span
+                  class="lang-he">מוצרים דיגיטליים</span></a></li>
+            <li><a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי
+                  אישי</span></a></li>
+            <li><a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמה
+                  מלאה</span></a></li>
+            <li><a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span
+                  class="lang-he">מיתוג ואתרים</span></a></li>
+            <li><a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+                  חינם</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Company</h4>
+          <h4 class="lang-he">החברה</h4>
+          <ul>
+            <li><a href="about.html"><span class="lang-en">About Aviya</span><span class="lang-he">אודות אביה</span></a>
+            </li>
+            <li><a href="contact.html"><span class="lang-en">Contact / Apply</span><span class="lang-he">צרי קשר /
+                  הרשמה</span></a></li>
+            <li><a href="legal.html"><span class="lang-en">Legal &amp; Policies</span><span class="lang-he">תנאים
+                  ומדיניות</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Connect</h4>
+          <h4 class="lang-he">בואי נתחבר</h4>
+          <ul>
+            <li><a>Aviya.patisserie@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/aviya.patisserie?igsh=MTN5endpODNoZXkyZQ==" target="_blank"
+                rel="noopener"><span class="lang-en">Instagram</span><span class="lang-he">אינסטגרם</span></a></li>
+            <li><a href="https://www.facebook.com/share/17By1hmKSk/" target="_blank" rel="noopener"><span
+                  class="lang-en">Facebook</span><span class="lang-he">פייסבוק</span></a></li>
+            <li><a href="https://wa.link/f8jt2z" target="_blank" rel="noopener"><span
+                  class="lang-en">WhatsApp</span><span class="lang-he">וואטסאפ</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span class="lang-en">&copy; <span data-year></span> Aviya Patisserie. All rights reserved.</span><span
+            class="lang-he">&copy; <span data-year></span> Aviya Patisserie. כל הזכויות שמורות.</span></p>
+        <p class="lang-en">Educational content only — not legal, tax, or food-licensing advice. See <a href="legal.html"
+            style="text-decoration:underline;">Legal &amp; Policies</a>.</p>
+        <p class="lang-he">תוכן חינוכי בלבד — אינו ייעוץ משפטי, מס או רישוי מזון. ראי <a href="legal.html"
+            style="text-decoration:underline;">תנאים ומדיניות</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       RECIPE DETAILS MODAL — one shared, reusable modal for all
+       recipe cards. Populated dynamically by JS from the clicked
+       card's own title/tags/price/image and its data-desc-en/he +
+       data-paypal-en/he attributes. "What's included" and the
+       delivery note are identical for every recipe, so they're
+       written once here rather than duplicated per card.
+       ============================================================ -->
+  <div class="modal-overlay no-print" id="recipeModalOverlay" hidden>
+    <div class="modal-box" id="recipeModal" role="dialog" aria-modal="true" aria-labelledby="recipeModalTitleEn">
+      <button type="button" class="modal-close" id="recipeModalClose" aria-label="Close">&times;</button>
+      <div class="modal-img" id="recipeModalImg" role="img"></div>
+      <div class="modal-body">
+        <h3 class="lang-en" id="recipeModalTitleEn"></h3>
+        <h3 class="lang-he" id="recipeModalTitleHe"></h3>
+
+        <div class="recipe-tags lang-en" id="recipeModalTagsEn"></div>
+        <div class="recipe-tags lang-he" id="recipeModalTagsHe"></div>
+
+        <p class="modal-desc lang-en" id="recipeModalDescEn"></p>
+        <p class="modal-desc lang-he" id="recipeModalDescHe"></p>
+
+        <div class="modal-includes">
+          <p class="modal-includes-title lang-en">What's included:</p>
+          <p class="modal-includes-title lang-he">מה כלול:</p>
+          <ul class="list-check lang-en">
+            <li>Designed PDF recipe file</li>
+            <li>Clear step-by-step instructions</li>
+            <li>U.S. ingredient adaptations</li>
+            <li>Pricing worksheet</li>
+            <li>Packaging, photography, and selling tips</li>
+            <li>Upgrade and variation ideas</li>
+          </ul>
+          <ul class="list-check lang-he">
+            <li>קובץ מתכון PDF מעוצב</li>
+            <li>הוראות ברורות שלב־אחר־שלב</li>
+            <li>התאמות לחומרי גלם בארה״ב</li>
+            <li>דף עבודה לתמחור</li>
+            <li>טיפים לאריזה, צילום ומכירה</li>
+            <li>רעיונות לשדרוגים וגיוונים</li>
+          </ul>
+        </div>
+
+        <p class="modal-price" id="recipeModalPrice"></p>
+
+        <label class="modal-checkbox">
+          <input type="checkbox" id="recipeModalCheckbox">
+          <span class="lang-en">I confirm that I have read and agree to the <a href="legal.html" target="_blank"
+              rel="noopener">purchase terms</a>, digital product policy, and understand that this product is
+            delivered manually by email 48 hours after payment confirmation.</span>
+          <span class="lang-he">אני מאשרת שקראתי והסכמתי ל<a href="legal.html" target="_blank" rel="noopener">תנאי
+              הרכישה</a>, מדיניות המוצרים הדיגיטליים, ואני מבינה שהמוצר נשלח ידנית במייל כ-48 שעות לאחר
+            אישור התשלום.</span>
+        </label>
+
+        <p class="modal-checkbox-msg lang-en" id="recipeModalMsgEn" hidden>Please confirm the purchase terms before
+          payment.</p>
+        <p class="modal-checkbox-msg lang-he" id="recipeModalMsgHe" hidden>יש לאשר את תנאי הרכישה לפני התשלום.</p>
+
+        <div class="modal-buy-buttons">
+          <a href="#" class="btn btn-primary is-disabled" id="recipeModalBuyEn" target="_blank" rel="noopener"
+            aria-disabled="true"><span class="lang-en">Buy English Version</span><span class="lang-he">רכישת גרסה
+              באנגלית</span></a>
+          <a href="#" class="btn btn-outline is-disabled" id="recipeModalBuyHe" target="_blank" rel="noopener"
+            aria-disabled="true"><span class="lang-en">Buy Hebrew Version</span><span class="lang-he">רכישת גרסה
+              בעברית</span></a>
+        </div>
+
+       
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       BUSINESS TEMPLATE DETAILS MODAL — same simplified purchase-terms
+       flow as the recipe modal, adapted for templates: single Buy Now
+       button (templates are one file, not EN/HE recipe versions), and
+       a generic "what's included" list since templates don't share one
+       fixed content list the way every recipe pack does.
+       ============================================================ -->
+  <div class="modal-overlay no-print" id="templateModalOverlay" hidden>
+    <div class="modal-box" id="templateModal" role="dialog" aria-modal="true" aria-labelledby="templateModalTitleEn">
+      <button type="button" class="modal-close" id="templateModalClose" aria-label="Close">&times;</button>
+      <div class="modal-body modal-body--no-image">
+        <h3 class="lang-en" id="templateModalTitleEn"></h3>
+        <h3 class="lang-he" id="templateModalTitleHe"></h3>
+
+        <p class="modal-desc lang-en" id="templateModalDescEn"></p>
+        <p class="modal-desc lang-he" id="templateModalDescHe"></p>
+
+        <div class="modal-includes">
+          <p class="modal-includes-title lang-en">What's included:</p>
+          <p class="modal-includes-title lang-he">מה כלול:</p>
+          <ul class="list-check lang-en">
+            <li>Ready-to-use electronic file</li>
+            <li>Simple setup instructions</li>
+            <li>Fully editable for your business</li>
+            <li>Lifetime access, no subscription</li>
+          </ul>
+          <ul class="list-check lang-he">
+            <li>קובץ אלקטרוני מוכן לשימוש</li>
+            <li>הוראות התקנה פשוטות</li>
+            <li>ניתן לעריכה מלאה בהתאם לעסק שלך</li>
+            <li>גישה לכל החיים, ללא מנוי</li>
+          </ul>
+        </div>
+
+        <p class="modal-price" id="templateModalPrice"></p>
+
+        <label class="modal-checkbox">
+          <input type="checkbox" id="templateModalCheckbox">
+          <span class="lang-en">I confirm that I have read and agree to the <a href="legal.html" target="_blank"
+              rel="noopener">purchase terms</a>, digital product policy, and understand that this product is
+            delivered manually by email after payment confirmation.</span>
+          <span class="lang-he">אני מאשרת שקראתי והסכמתי ל<a href="legal.html" target="_blank" rel="noopener">תנאי
+              הרכישה</a>, מדיניות המוצרים הדיגיטליים, ואני מבינה שהמוצר נשלח ידנית במייל לאחר
+            אישור התשלום.</span>
+        </label>
+
+        <p class="modal-checkbox-msg lang-en" id="templateModalMsgEn" hidden>Please confirm the purchase terms before
+          payment.</p>
+        <p class="modal-checkbox-msg lang-he" id="templateModalMsgHe" hidden>יש לאשר את תנאי הרכישה לפני התשלום.</p>
+
+        <div class="modal-buy-buttons">
+          <a href="#" class="btn btn-primary btn-block is-disabled" id="templateModalBuy" target="_blank" rel="noopener"
+            aria-disabled="true"><span class="lang-en">Buy Now</span><span class="lang-he">לרכישה</span></a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       GUIDE DETAILS MODAL — Guides & Mini Resources are paid digital
+       products (each has a price + Buy Now), so they get the same
+       simplified purchase-terms checkbox flow as recipes and business
+       templates. Same single-button pattern as the template modal,
+       with "what's included" copy suited to a downloadable PDF guide
+       rather than a spreadsheet.
+       ============================================================ -->
+  <div class="modal-overlay no-print" id="guideModalOverlay" hidden>
+    <div class="modal-box" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideModalTitleEn">
+      <button type="button" class="modal-close" id="guideModalClose" aria-label="Close">&times;</button>
+      <div class="modal-body modal-body--no-image">
+        <h3 class="lang-en" id="guideModalTitleEn"></h3>
+        <h3 class="lang-he" id="guideModalTitleHe"></h3>
+
+        <p class="modal-desc lang-en" id="guideModalDescEn"></p>
+        <p class="modal-desc lang-he" id="guideModalDescHe"></p>
+
+        <div class="modal-includes">
+          <p class="modal-includes-title lang-en">What's included:</p>
+          <p class="modal-includes-title lang-he">מה כלול:</p>
+          <ul class="list-check lang-en">
+            <li>Downloadable PDF guide</li>
+            <li>Clear, practical, easy-to-follow content</li>
+            <li>Written specifically for home bakery businesses</li>
+            
+          </ul>
+          <ul class="list-check lang-he">
+            <li>מדריך PDF להורדה</li>
+            <li>תוכן ברור, מעשי וקל למעקב</li>
+            <li>נכתב במיוחד לעסקי אפייה מהבית</li>
+           
+          </ul>
+        </div>
+
+        <p class="modal-price" id="guideModalPrice"></p>
+
+        <label class="modal-checkbox">
+          <input type="checkbox" id="guideModalCheckbox">
+          <span class="lang-en">I confirm that I have read and agree to the <a href="legal.html" target="_blank"
+              rel="noopener">purchase terms</a>, digital product policy, and understand that this product is
+            delivered manually by email after payment confirmation.</span>
+          <span class="lang-he">אני מאשרת שקראתי והסכמתי ל<a href="legal.html" target="_blank" rel="noopener">תנאי
+              הרכישה</a>, מדיניות המוצרים הדיגיטליים, ואני מבינה שהמוצר נשלח ידנית במייל לאחר
+            אישור התשלום.</span>
+        </label>
+
+        <p class="modal-checkbox-msg lang-en" id="guideModalMsgEn" hidden>Please confirm the purchase terms before
+          payment.</p>
+        <p class="modal-checkbox-msg lang-he" id="guideModalMsgHe" hidden>יש לאשר את תנאי הרכישה לפני התשלום.</p>
+
+        <div class="modal-buy-buttons">
+          <a href="#" class="btn btn-primary btn-block is-disabled" id="guideModalBuy" target="_blank" rel="noopener"
+            aria-disabled="true"><span class="lang-en">Buy Now</span><span class="lang-he">לרכישה</span></a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=final-mobile-3"></script>
+</body>
+
+</html>

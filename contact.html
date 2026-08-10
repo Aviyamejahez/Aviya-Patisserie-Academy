@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<script>
+  /* Apply saved language IMMEDIATELY, before first paint, so the page never
+     flashes the wrong language/direction while script.js is still loading
+     (this was the main cause of the Hebrew "blank on load" issue). This is
+     safe even if localStorage is empty/unavailable — script.js re-applies
+     the same logic on DOMContentLoaded regardless. */
+  (function(){
+    try{
+      var l = localStorage.getItem("aviya-lang");
+      if(l === "he" || l === "en"){
+        document.documentElement.setAttribute("lang", l);
+        document.documentElement.setAttribute("dir", l === "he" ? "rtl" : "ltr");
+      }
+    }catch(e){}
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact / Apply — Aviya Patisserie</title>
+<meta name="description" content="Get in touch with Aviya Patisserie — apply for mentorship, the full setup package, branding or website services, or ask about digital products.">
+<meta property="og:title" content="Contact / Apply — Aviya Patisserie">
+<meta property="og:description" content="Apply for mentorship, full setup, branding, or ask a question.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@400;600;700&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=final-mobile-2">
+</head>
+<body>
+<a class="skip-link" href="#main"><span class="lang-en">Skip to content</span><span class="lang-he">דלגי לתוכן</span></a>
+
+<header class="site-header">
+  <div class="nav container">
+    <a href="index.html" class="brand">Aviya Patisserie<span class="lang-en">Home Bakery Business Academy</span><span class="lang-he">האקדמיה לעסקי אפייה מהבית</span></a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html"><span class="lang-en">Home</span><span class="lang-he">בית</span></a>
+      <a href="digital-products.html"><span class="lang-en">Digital Products</span><span class="lang-he">מוצרים דיגיטליים</span></a>
+      <a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי אישי</span></a>
+      <a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמת עסק מלא</span></a>
+      <a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span class="lang-he">מיתוג ואתרים</span></a>
+      <a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים חינם</span></a>
+      <a href="about.html"><span class="lang-en">About</span><span class="lang-he">אודות</span></a>
+      <a href="contact.html" aria-current="page"><span class="lang-en">Contact</span><span class="lang-he">צרי קשר</span></a>
+    </nav>
+    <div class="nav-actions">
+      <div class="lang-toggle" role="group" aria-label="Language switch">
+        <button data-lang-btn="en" aria-pressed="true">EN</button>
+        <button data-lang-btn="he" aria-pressed="false">HE</button>
+      </div>
+      <a href="contact.html" class="btn btn-gold btn-sm"><span class="lang-en">Apply Now</span><span class="lang-he">להרשמה</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="eyebrow lang-en" style="justify-content:center;">Let's Talk</p>
+      <p class="eyebrow lang-he" style="justify-content:center;">בואי נדבר</p>
+      <h1 class="lang-en">Contact &amp; Apply</h1>
+      <h1 class="lang-he">צרי קשר / הרשמה</h1>
+      <p class="lang-en">Choose the path that fits what you're looking for. </p>
+      <p class="lang-he">בחרי את המסלול המתאים לך.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+
+        <div class="form-card reveal">
+          <h3 class="lang-en">General Contact</h3><h3 class="lang-he">פנייה כללית</h3>
+          <p class="lang-en">Have a question that doesn't fit anywhere else? Reach out directly.</p>
+          <p class="lang-he">יש לך שאלה שלא מתאימה לאף קטגוריה? פני אלינו ישירות.</p>
+          <div class="contact-links">
+            <a href="mailto:aviya.patisserie@gmail.com"><span class="lang-en">Message us on Email</span><span class="lang-he">שלחי לנו מייל</span></a>
+            <a href="https://wa.link/f8jt2z" target="_blank" rel="noopener"><span class="lang-en">Message us on WhatsApp</span><span class="lang-he">שלחי הודעה בוואטסאפ</span></a>
+          </div>
+        </div>
+
+        <div class="form-card reveal">
+          <h3 class="lang-en">Apply for Mentorship</h3><h3 class="lang-he">בקשה לליווי אישי</h3>
+          <p class="lang-en">Ready for one-on-one guidance? Start your mentorship application.</p>
+          <p class="lang-he">מוכנה לליווי אישי אחד-על-אחד? התחילי את בקשת ההרשמה לליווי.</p>
+          <div class="contact-links">
+            <a href="https://form.jotform.com/262172030751043" target="_blank" rel="noopener"><span class="lang-en">Apply for Mentorship</span><span class="lang-he">להגשת בקשה לליווי</span></a>
+          </div>
+        </div>
+
+        <div class="form-card reveal">
+          <h3 class="lang-en">Apply for the Full Setup Package</h3><h3 class="lang-he">בקשה לחבילת ההקמה המלאה</h3>
+          <p class="lang-en">Ready to build your whole business, start to finish? Apply here.</p>
+          <p class="lang-he">מוכנה לבנות את כל העסק שלך, מההתחלה ועד הסוף? הגישי בקשה כאן.</p>
+          <div class="contact-links">
+            <a href="https://form.jotform.com/262202184009447" target="_blank" rel="noopener"><span class="lang-en">Apply for Full Setup</span><span class="lang-he">להגשת בקשה להקמה מלאה</span></a>
+          </div>
+        </div>
+
+        <div class="form-card reveal">
+          <h3 class="lang-en">Request Logo Service</h3><h3 class="lang-he">בקשת שירות לוגו</h3>
+          <p class="lang-en">Looking for a logo that fits your bakery brand? Request a quote.</p>
+          <p class="lang-he">מחפשת לוגו שמתאים למותג האפייה שלך? בקשי הצעת מחיר.</p>
+          <div class="contact-links">
+            <a href="https://form.jotform.com/262206451512043" target="_blank" rel="noopener"><span class="lang-en">Request a Logo Quote</span><span class="lang-he">בקשת הצעת מחיר ללוגו</span></a>
+          </div>
+        </div>
+
+        <div class="form-card reveal">
+          <h3 class="lang-en">Request Website Service</h3><h3 class="lang-he">בקשת שירות אתר</h3>
+          <p class="lang-en">Want a website that makes your bakery look real and trustworthy? Apply here.</p>
+          <p class="lang-he">רוצה אתר שגורם לעסק האפייה שלך להיראות אמיתי ואמין? הגישי בקשה כאן.</p>
+          <div class="contact-links">
+            <a href="https://form.jotform.com/262206785094058" target="_blank" rel="noopener"><span class="lang-en">Apply for Website Service</span><span class="lang-he">להגשת בקשה לשירות אתר</span></a>
+          </div>
+        </div>
+
+        <div class="form-card reveal">
+          <h3 class="lang-en">Ask About Digital Products</h3><h3 class="lang-he">שאלות על מוצרים דיגיטליים</h3>
+          <p class="lang-en">Questions about a recipe pack or template before you buy? Ask away.</p>
+          <p class="lang-he">יש לך שאלות על חבילת מתכונים או תבנית לפני שאת קונה? שאלי בחופשיות.</p>
+          <div class="contact-links">
+            <a href="mailto:aviya.patisserie@gmail.com" class="lang-en">Email Us</a>
+            <a href="mailto:aviya.patisserie@gmail.com" class="lang-he">שלחי לנו מייל</a>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="note reveal" style="max-width:760px;margin:36px auto 0;text-align:center;">
+        <span class="lang-en"><strong>Please note:</strong> Purchases, paid services, and contracts must be completed by an adult, or with parent/guardian approval where required. For full details, see our <a href="legal.html">Legal &amp; Policies</a> page.</span>
+        <span class="lang-he"><strong>לתשומת ליבך:</strong> רכישות, שירותים בתשלום והסכמים יש להשלים באמצעות בגיר/ה, או באישור הורה/אפוטרופוס במקרים הנדרשים. לפרטים מלאים ראי <a href="legal.html">תנאים ומדיניות</a>.</span>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand" style="color:var(--ivory);">Aviya Patisserie</div>
+        <p class="lang-en">Home Bakery Business Academy — helping women turn their baking dream into an organized, profitable home bakery business.</p>
+        <p class="lang-he">האקדמיה לעסקי אפייה מהבית — עוזרת לנשים להפוך את חלום האפייה שלהן לעסק אפייה ביתי מאורגן ורווחי.</p>
+      </div>
+      <div>
+        <h4 class="lang-en">Explore</h4><h4 class="lang-he">ניווט</h4>
+        <ul>
+          <li><a href="digital-products.html"><span class="lang-en">Digital Products</span><span class="lang-he">מוצרים דיגיטליים</span></a></li>
+          <li><a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי אישי</span></a></li>
+          <li><a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמה מלאה</span></a></li>
+          <li><a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span class="lang-he">מיתוג ואתרים</span></a></li>
+          <li><a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים חינם</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="lang-en">Company</h4><h4 class="lang-he">החברה</h4>
+        <ul>
+          <li><a href="about.html"><span class="lang-en">About Aviya</span><span class="lang-he">אודות אביה</span></a></li>
+          <li><a href="contact.html"><span class="lang-en">Contact / Apply</span><span class="lang-he">צרי קשר / הרשמה</span></a></li>
+          <li><a href="legal.html"><span class="lang-en">Legal &amp; Policies</span><span class="lang-he">תנאים ומדיניות</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="lang-en">Connect</h4><h4 class="lang-he">בואי נתחבר</h4>
+        <ul>
+            <li><a>Aviya.patisserie@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/aviya.patisserie?igsh=MTN5endpODNoZXkyZQ==" target="_blank" rel="noopener"><span class="lang-en">Instagram</span><span
+                  class="lang-he">אינסטגרם</span></a></li>
+            <li><a href="https://www.facebook.com/share/17By1hmKSk/" target="_blank" rel="noopener"><span class="lang-en">Facebook</span><span
+                  class="lang-he">פייסבוק</span></a></li>
+            <li><a href="https://wa.link/f8jt2z" target="_blank" rel="noopener"><span class="lang-en">WhatsApp</span><span
+                  class="lang-he">וואטסאפ</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p><span class="lang-en">&copy; <span data-year></span> Aviya Patisserie. All rights reserved.</span><span class="lang-he">&copy; <span data-year></span> Aviya Patisserie. כל הזכויות שמורות.</span></p>
+      <p class="lang-en">Educational content only — not legal, tax, or food-licensing advice. See <a href="legal.html" style="text-decoration:underline;">Legal &amp; Policies</a>.</p>
+      <p class="lang-he">תוכן חינוכי בלבד — אינו ייעוץ משפטי, מס או רישוי מזון. ראי <a href="legal.html" style="text-decoration:underline;">תנאים ומדיניות</a>.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js?v=final-mobile-2"></script>
+</body>
+</html>

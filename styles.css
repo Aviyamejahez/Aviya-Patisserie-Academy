@@ -1,0 +1,1139 @@
+/* ==========================================================================
+   AVIYA PATISSERIE — Home Bakery Business Academy
+   Stylesheet
+   --------------------------------------------------------------------------
+   HOW TO EDIT COLORS: change the CSS custom properties in :root below.
+   HOW TO EDIT FONTS: change the --font-* variables and the matching
+   Google Fonts <link> tags in the <head> of each HTML file.
+   ========================================================================== */
+
+/* ---- Fonts loaded via Google Fonts (free, no API key needed) ----
+   English display: Fraunces | English body: Karla
+   Hebrew display:  Frank Ruhl Libre | Hebrew body: Assistant
+   See the <head> of each HTML page for the <link> tags. */
+
+:root{
+  /* ---- Brand palette (edit here to re-theme the whole site) ---- */
+  --ivory:      #FBF6EE;   /* main background */
+  --beige:      #F1E4D0;   /* warm beige, alternate section bg */
+  --blush:      #F4DED3;   /* soft blush, accent bg */
+  --cocoa:      #6B4226;   /* cocoa brown, secondary text / borders */
+  --cocoa-dark: #4A2C18;
+  --gold:       #C9A15E;   /* champagne gold, accent / CTA */
+  --gold-light: #E4CFA0;
+  --espresso:   #3A2A20;   /* deep espresso, main text color */
+  --white:      #FFFFFF;
+  --success:    #6E8B5E;
+  --line:       rgba(58,42,32,0.14);
+
+  /* ---- Type ---- */
+  --font-display-en: 'Fraunces', Georgia, serif;
+  --font-body-en: 'Karla', Arial, sans-serif;
+  --font-display-he: 'Frank Ruhl Libre', 'Times New Roman', serif;
+  --font-body-he: 'Assistant', Arial, sans-serif;
+
+  --font-display: var(--font-display-en);
+  --font-body: var(--font-body-en);
+
+  /* ---- Spacing / shape ---- */
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 28px;
+  --container: 1180px;
+  --shadow-soft: 0 18px 40px -18px rgba(58,42,32,0.28);
+  --shadow-card: 0 10px 30px -14px rgba(58,42,32,0.22);
+}
+
+html[lang="he"]{
+  --font-display: var(--font-display-he);
+  --font-body: var(--font-body-he);
+}
+
+/* ---- Language visibility toggle ----
+   Every piece of translatable text exists twice in the HTML: once inside
+   an element with class "lang-en" and once with class "lang-he".
+   Only one is shown, based on the <html lang="..."> attribute. */
+html[lang="en"] .lang-he{ display:none !important; }
+html[lang="he"] .lang-en{ display:none !important; }
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; max-width:100%; overflow-x:hidden; }
+body{
+  margin:0;
+  background:var(--ivory);
+  color:var(--espresso);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  max-width:100%;
+  overflow-x:hidden;
+}
+img, video{ max-width:100%; height:auto; display:block; }
+a{ color:inherit; text-decoration:none; }
+ul{ margin:0; padding:0; list-style:none; }
+button{ font-family:inherit; cursor:pointer; }
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  color:var(--espresso);
+  line-height:1.15;
+  margin:0 0 .5em;
+  font-weight:600;
+}
+p{ margin:0 0 1em; }
+.container{ max-width:var(--container); margin:0 auto; padding:0 24px; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+}
+
+/* Focus visibility for keyboard users */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+  font-family:var(--font-body);
+  font-size:.78rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--cocoa);
+  font-weight:700;
+  margin-bottom:14px;
+}
+.eyebrow::before{
+  content:"";
+  width:22px; height:2px;
+  background:var(--gold);
+  display:inline-block;
+}
+html[dir="rtl"] .eyebrow::before{ order:2; }
+
+.section{ padding:96px 0; }
+.section--tight{ padding:64px 0; }
+.section--alt{ background:var(--beige); }
+.section--blush{ background:var(--blush); }
+.section--dark{ background:var(--espresso); color:var(--ivory); }
+.section--dark h1,.section--dark h2,.section--dark h3{ color:var(--ivory); }
+
+.section-head{ max-width:680px; margin:0 auto 56px; text-align:center; }
+.section-head p{ color:var(--cocoa); font-size:1.05rem; }
+.section-head.align-start{ text-align:start; margin-inline:0; }
+
+.text-center{ text-align:center; }
+.muted{ color:var(--cocoa); }
+.small{ font-size:.9rem; }
+.note{
+  font-size:.88rem;
+  color:var(--cocoa);
+  background:var(--beige);
+  border:1px dashed var(--gold);
+  border-radius:var(--radius-sm);
+  padding:12px 16px;
+  margin:16px 0;
+}
+.note strong{ color:var(--espresso); }
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.5em;
+  padding:15px 30px;
+  border-radius:100px;
+  font-weight:700;
+  font-size:.98rem;
+  border:2px solid transparent;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  white-space:nowrap;
+}
+.btn:hover{ transform:translateY(-2px); }
+.btn-primary{
+  background:var(--cocoa);
+  color:var(--ivory);
+  box-shadow:var(--shadow-card);
+}
+.btn-primary:hover{ background:var(--cocoa-dark); }
+.btn-gold{
+  background:var(--gold);
+  color:var(--espresso);
+  box-shadow:var(--shadow-card);
+}
+.btn-gold:hover{ background:var(--gold-light); }
+.btn-outline{
+  background:transparent;
+  border-color:var(--cocoa);
+  color:var(--cocoa);
+}
+.btn-outline:hover{ background:var(--cocoa); color:var(--ivory); }
+.btn-outline-light{
+  background:transparent;
+  border-color:rgba(251,246,238,0.6);
+  color:var(--ivory);
+}
+.btn-outline-light:hover{ background:var(--ivory); color:var(--espresso); }
+.btn-block{ width:100%; }
+.btn-sm{ padding:10px 20px; font-size:.86rem; }
+.btn[disabled]{ opacity:.5; cursor:not-allowed; }
+
+.btn-row{ display:flex; flex-wrap:wrap; gap:14px; margin-top:28px; }
+.section-head .btn-row{ justify-content:center; }
+
+/* ==========================================================================
+   HEADER / NAV
+   ========================================================================== */
+.site-header{
+  position:sticky; top:0; z-index:1000;
+  background:rgba(251,246,238,0.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 24px;
+  gap:20px;
+}
+.brand{
+  font-family:var(--font-display);
+  font-size:1.35rem;
+  font-weight:700;
+  color:var(--espresso);
+  display:flex;
+  flex-direction:column;
+  line-height:1.1;
+}
+.brand span{ font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; color:var(--cocoa); font-family:var(--font-body); font-weight:700; }
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  font-size:.94rem;
+  font-weight:600;
+}
+.nav-links a{ position:relative; padding:6px 0; }
+.nav-links a::after{
+  content:"";
+  position:absolute; inset-inline-start:0; bottom:0;
+  width:0; height:2px;
+  background:var(--gold);
+  transition:width .2s ease;
+}
+.nav-links a:hover::after, .nav-links a[aria-current="page"]::after{ width:100%; }
+
+.nav-actions{ display:flex; align-items:center; gap:14px; }
+
+.lang-toggle{
+  display:flex;
+  border:1px solid var(--cocoa);
+  border-radius:100px;
+  overflow:hidden;
+  font-size:.78rem;
+  font-weight:700;
+}
+.lang-toggle button{
+  background:transparent;
+  border:none;
+  padding:7px 14px;
+  color:var(--cocoa);
+}
+.lang-toggle button[aria-pressed="true"]{ background:var(--cocoa); color:var(--ivory); }
+
+.nav-toggle{
+  display:none;
+  background:none;
+  border:1px solid var(--cocoa);
+  border-radius:8px;
+  width:42px; height:42px;
+  align-items:center;
+  justify-content:center;
+}
+.nav-toggle span, .nav-toggle span::before, .nav-toggle span::after{
+  content:""; display:block; width:20px; height:2px; background:var(--espresso);
+  position:relative; transition:transform .2s ease, opacity .2s ease;
+}
+.nav-toggle span::before{ position:absolute; top:-6px; }
+.nav-toggle span::after{ position:absolute; top:6px; }
+/* Mobile nav breakpoint rules now live in the consolidated RESPONSIVE section at the end of this file. */
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero{
+  position:relative;
+  padding:80px 0 100px;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 10%, rgba(201,161,94,0.22), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 5% 90%, rgba(244,222,211,0.65), transparent 60%);
+  pointer-events:none;
+}
+.hero .container{
+  position:relative;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:56px;
+  align-items:center;
+}
+.hero h1{ font-size:clamp(2.2rem, 4vw, 3.4rem); margin-bottom:.4em; }
+.hero .lede{ font-size:1.15rem; color:var(--cocoa); max-width:52ch; }
+.hero-legal{ margin-top:22px; }
+
+/* Signature visual: the recipe card */
+.recipe-card{
+  position:relative;
+  background:var(--white);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-soft);
+  padding:34px 30px 30px;
+  transform:rotate(2deg);
+  border:1px solid var(--line);
+}
+.recipe-card::before{
+  content:"";
+  position:absolute; top:14px; left:20px; right:20px; height:10px;
+  background-image:radial-gradient(circle, var(--ivory) 3px, transparent 3.5px);
+  background-size:16px 10px;
+  background-repeat:repeat-x;
+  border-bottom:1px dashed var(--line);
+}
+.recipe-card .pin{
+  position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+  width:22px; height:22px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 70%);
+  box-shadow:0 3px 6px rgba(0,0,0,0.25);
+}
+.recipe-card h3{
+  font-size:1.5rem;
+  margin-top:18px;
+  text-align:center;
+}
+.recipe-card .divider{ border-top:1px dashed var(--line); margin:16px 0; }
+.recipe-card ul{ display:flex; flex-direction:column; gap:10px; font-size:.94rem; }
+.recipe-card ul li{ display:flex; gap:10px; align-items:flex-start; }
+.recipe-card ul li::before{ content:"✦"; color:var(--gold); flex-shrink:0; margin-top:2px; }
+.recipe-card .tag{
+  display:inline-block; margin-top:18px;
+  background:var(--blush); color:var(--cocoa);
+  padding:6px 14px; border-radius:100px; font-size:.78rem; font-weight:700;
+}
+
+/* Hero responsive stacking now lives in the consolidated RESPONSIVE section at the end of this file. */
+
+/* ==========================================================================
+   TRUST STRIP
+   ========================================================================== */
+.trust-strip{
+  display:flex; flex-wrap:wrap; gap:32px 48px;
+  justify-content:center;
+  padding:28px 0;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.trust-item{
+  display:flex; align-items:center; gap:10px;
+  font-weight:700; font-size:.92rem; color:var(--cocoa);
+}
+.trust-item .dot{ width:8px; height:8px; border-radius:50%; background:var(--gold); }
+
+/* ==========================================================================
+   CARDS — grid, product, pricing
+   ========================================================================== */
+.grid{ display:grid; gap:28px; }
+.grid-2{ grid-template-columns:repeat(2,1fr); }
+.grid-3{ grid-template-columns:repeat(3,1fr); }
+.grid-4{ grid-template-columns:repeat(4,1fr); }
+/* Grid stacking breakpoints now live in the consolidated RESPONSIVE section at the end of this file. */
+
+.card{
+  background:var(--white);
+  border-radius:var(--radius-md);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.card:hover{ transform:translateY(-4px); box-shadow:0 22px 40px -18px rgba(58,42,32,0.3); }
+
+.img-placeholder{
+  background: linear-gradient(135deg, var(--beige), var(--blush));
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+  aspect-ratio: 4 / 3;
+  min-height: auto;
+  margin-bottom: 18px;
+  overflow: hidden;
+  padding: 0;
+}
+/* Once a real photo is set via inline background-image, hide the placeholder text/border so only the photo shows */
+.img-placeholder[style*="background-image"]{
+  border-style:solid;
+  border-color:var(--line);
+  color:transparent;
+  font-size:0;
+}
+
+.product-card h3{ font-size:1.25rem; margin-bottom:8px; }
+.product-card .price{
+  font-family:var(--font-display);
+  font-size:1.5rem;
+  color:var(--cocoa);
+  margin:14px 0 6px;
+}
+.product-card .includes{ margin:14px 0; font-size:.9rem; }
+.product-card .includes li{ display:flex; gap:8px; margin-bottom:6px; }
+.product-card .includes li::before{ content:"✓"; color:var(--success); font-weight:700; }
+.product-card .badge{
+  align-self:flex-start;
+  background:var(--blush); color:var(--cocoa);
+  padding:5px 12px; border-radius:100px; font-size:.74rem; font-weight:700;
+  margin-bottom:14px;
+}
+.product-card .btn-pair{ display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+.product-card .btn-pair .btn{ flex:1; min-width:140px; }
+.product-card .fine-links{ margin-top:12px; font-size:.82rem; }
+.product-card .fine-links a{ text-decoration:underline; color:var(--cocoa); }
+
+/* ==========================================================================
+   RECIPE CATALOG CARDS
+   --------------------------------------------------------------------------
+   Compact product-catalog cards used only inside the Digital Israeli
+   Recipe Packs section (#recipeGrid). Deliberately NOT built on .card/
+   .product-card — those stay reserved for Business Templates and Guides,
+   which keep their current layout untouched. This also avoids a naming
+   collision: .recipe-card is already used sitewide for the decorative
+   hero mockup card (rotated card with pin/dashed-line, see HERO above);
+   these catalog cards use .recipe-product-card instead.
+   ========================================================================== */
+.recipe-info-box{
+  max-width:760px;
+  margin:0 auto 24px;
+  padding:12px 20px;
+  text-align:center;
+  background:var(--beige);
+  border-radius:999px;
+}
+.recipe-info-title{
+  font-family:var(--font-display);
+  font-size:.82rem;
+  font-weight:700;
+  color:var(--cocoa-dark);
+  margin:0 0 2px;
+}
+.recipe-info-text{
+  font-size:.82rem;
+  color:var(--cocoa);
+  margin:0;
+  line-height:1.5;
+}
+@media (max-width:640px){
+  .recipe-info-box{ border-radius:var(--radius-md); padding:12px 16px; }
+}
+
+.recipe-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+  gap:20px;
+}
+.recipe-product-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-card);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.recipe-product-card:hover{ transform:translateY(-4px); box-shadow:0 22px 40px -18px rgba(58,42,32,0.3); }
+
+.recipe-product-img{
+  aspect-ratio:1/1;
+  width:100%;
+  background:linear-gradient(135deg, var(--beige), var(--blush));
+  background-size:cover;
+  background-position:center;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:10px;
+  font-size:.76rem;
+  color:var(--cocoa);
+}
+/* Once a real photo is set via inline background-image, hide the
+   placeholder text so only the photo shows (image behaves like
+   object-fit:cover via background-size:cover above). */
+.recipe-product-img[style*="background-image"]{ color:transparent; font-size:0; }
+
+.recipe-product-body{
+  padding:14px 16px 16px;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}
+.recipe-product-body h3{ font-size:1rem; margin:0 0 8px; line-height:1.3; }
+.recipe-product-body .recipe-tags{ margin:0 0 10px; }
+.recipe-product-price{
+  font-family:var(--font-display);
+  font-size:1.15rem;
+  color:var(--cocoa);
+  margin:0 0 12px;
+}
+.recipe-buy-btn{ margin-top:auto; width:100%; }
+
+/* ==========================================================================
+   RECIPE DETAILS MODAL
+   --------------------------------------------------------------------------
+   One shared modal, reused for every recipe card. Populated dynamically
+   by JS from whichever card's "View Details & Buy" button was clicked.
+   ========================================================================== */
+body.modal-open{ overflow:hidden; }
+
+.modal-overlay{
+  position:fixed; inset:0;
+  background:rgba(58,42,32,0.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:2000;
+}
+.modal-overlay[hidden]{ display:none; }
+
+.modal-box{
+  position:relative;
+  background:var(--white);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-soft);
+  max-width:560px;
+  width:100%;
+  max-height:88vh;
+  overflow-y:auto;
+  padding:0 0 24px;
+}
+.modal-close{
+  position:absolute; top:12px; inset-inline-end:12px;
+  width:36px; height:36px;
+  border-radius:50%;
+  border:none;
+  background:var(--ivory);
+  color:var(--cocoa);
+  font-size:1.3rem;
+  line-height:1;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  z-index:1;
+}
+.modal-close:hover{ background:var(--blush); }
+
+.modal-img{
+  width:100%;
+  aspect-ratio:1/1;
+  max-height:260px;
+  background:linear-gradient(135deg, var(--beige), var(--blush));
+  background-size:cover;
+  background-position:center;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center;
+  color:var(--cocoa);
+  font-size:.8rem;
+  border-radius:var(--radius-md) var(--radius-md) 0 0;
+  padding:12px;
+}
+.modal-img[style*="background-image"]{ color:transparent; font-size:0; }
+
+.modal-body{ padding:20px 24px 0; }
+.modal-body--no-image{ padding-top:44px; }
+.modal-body h3{ font-size:1.3rem; margin-bottom:8px; }
+.modal-body .recipe-tags{ margin-bottom:10px; }
+.modal-desc{ color:var(--cocoa); font-size:.95rem; margin:10px 0; }
+
+.modal-includes{
+  background:var(--beige);
+  border-radius:var(--radius-sm);
+  padding:14px 16px;
+  margin:16px 0;
+}
+.modal-includes-title{ font-weight:700; margin:0 0 8px; color:var(--espresso); }
+.modal-includes .list-check{ margin:0; }
+.modal-includes .list-check li{ font-size:.9rem; }
+
+.modal-price{
+  font-family:var(--font-display);
+  font-size:1.5rem;
+  color:var(--cocoa);
+  margin:14px 0 6px;
+}
+
+.modal-checkbox{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  font-size:.86rem;
+  color:var(--espresso);
+  margin:16px 0 6px;
+  cursor:pointer;
+}
+.modal-checkbox input{
+  margin-top:3px;
+  width:18px; height:18px;
+  flex-shrink:0;
+  accent-color:var(--cocoa);
+  cursor:pointer;
+}
+.modal-checkbox a{ text-decoration:underline; color:var(--cocoa); font-weight:700; }
+
+.modal-checkbox-msg{ color:#B3452E; font-size:.82rem; margin:0 0 10px; }
+
+.modal-buy-buttons{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.modal-buy-buttons .btn{ flex:1; min-width:160px; }
+.modal-buy-buttons .btn.is-disabled{ opacity:.5; cursor:not-allowed; }
+
+/* ==========================================================================
+   DIGITAL PRODUCTS — RECIPE CARDS AND RECIPE MODAL ONLY
+   --------------------------------------------------------------------------
+   Scoped visual refinement (no content/markup/behavior changes):
+     1) Recipe modal photo is no longer cropped (contain, not cover).
+     2) Mobile recipe cards become a compact two-column catalog.
+     3) All recipe image areas stay a consistent 1:1 square.
+   Every rule below is scoped either to #recipes (grid/cards) or to
+   #recipeModalOverlay (modal), since .modal-box/.modal-img/.modal-close/
+   .modal-body are shared with the Business Template and Guide modals and
+   must not be affected. Nothing outside the recipes section is touched.
+   ========================================================================== */
+
+/* ---- Recipe card image: keep the existing square photo/placeholder
+   treatment explicit and consistent (object-fit:cover equivalent via
+   background-size:cover), aligned flush with the card's top corners. ---- */
+#recipes .recipe-product-img{
+  aspect-ratio:1/1;
+  height:auto;
+  background-size:cover;
+  background-position:center;
+  border-radius:var(--radius-md) var(--radius-md) 0 0;
+}
+
+/* ---- Recipe details modal: square, uncropped media column ---- */
+#recipeModalOverlay .modal-box{
+  max-width:920px;
+  max-height:90vh;
+  padding:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+#recipeModalOverlay .modal-close{
+  z-index:2;
+  background:var(--white);
+  box-shadow:0 2px 8px rgba(58,42,32,0.18);
+}
+#recipeModalOverlay .modal-img{
+  width:100%;
+  aspect-ratio:1/1;
+  max-height:none;
+  background-color:var(--ivory);
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  border-radius:0;
+  flex-shrink:0;
+}
+#recipeModalOverlay .modal-body{
+  padding:24px 28px 28px;
+}
+
+/* At desktop widths, switch to a two-column layout: a square media
+   column beside a details column. The whole box shares one scrollbar,
+   so nothing is ever cropped, clipped, or forced to stretch/distort. */
+@media (min-width:769px){
+  #recipeModalOverlay .modal-box{
+    display:flex;
+    flex-direction:row;
+    align-items:flex-start;
+  }
+  #recipeModalOverlay .modal-img{
+    width:42%;
+    max-width:400px;
+    flex-shrink:0;
+    align-self:flex-start;
+    border-start-start-radius:var(--radius-md);
+    border-end-start-radius:var(--radius-md);
+  }
+  #recipeModalOverlay .modal-body{
+    flex:1 1 auto;
+    min-width:0;
+    padding:32px 36px;
+  }
+}
+
+/* ---- Mobile: compact two-column recipe catalog ---- */
+@media (max-width:480px){
+  #recipes .recipe-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:12px;
+  }
+  #recipes .recipe-product-body{
+    padding:10px 10px 12px;
+  }
+  #recipes .recipe-product-body h3{
+    font-size:.86rem;
+    margin:0 0 6px;
+    line-height:1.25;
+  }
+  #recipes .recipe-product-body .recipe-tags{
+    gap:4px;
+    margin:0 0 8px;
+  }
+  #recipes .recipe-product-body .recipe-tag{
+    font-size:.62rem;
+    padding:3px 8px;
+  }
+  #recipes .recipe-product-price{
+    font-size:.95rem;
+    margin:0 0 10px;
+  }
+  #recipes .recipe-buy-btn{
+    font-size:.74rem;
+    padding-block:10px;
+    padding-inline:8px;
+  }
+
+  /* Mobile recipe modal: compact single-column product sheet, image
+     no longer fills the screen. */
+  #recipeModalOverlay{
+    padding:8px;
+  }
+  #recipeModalOverlay .modal-box{
+    width:100%;
+    max-width:100%;
+    max-height:92vh;
+    max-height:92dvh;
+    margin:0 auto;
+  }
+  #recipeModalOverlay .modal-img{
+    width:min(70vw, 260px);
+    max-width:100%;
+    height:auto;
+    aspect-ratio:1/1;
+    margin:18px auto 0;
+    border-radius:var(--radius-md);
+    align-self:center;
+  }
+  #recipeModalOverlay .modal-body{
+    padding:16px 18px 20px;
+  }
+  #recipeModalOverlay .modal-body h3{
+    font-size:1.1rem;
+    margin-bottom:6px;
+  }
+  #recipeModalOverlay .modal-desc{
+    font-size:.9rem;
+    margin:8px 0;
+  }
+  #recipeModalOverlay .modal-includes{
+    padding:12px 14px;
+    margin:12px 0;
+  }
+  #recipeModalOverlay .modal-price{
+    font-size:1.3rem;
+    margin:10px 0 6px;
+  }
+}
+
+/* Extra-narrow phones: keep the two-column catalog, tighten further */
+@media (max-width:359px){
+  #recipes .recipe-grid{
+    gap:10px;
+  }
+  #recipes .recipe-product-body{
+    padding:8px 8px 10px;
+  }
+  #recipes .recipe-product-body h3{
+    font-size:.8rem;
+  }
+}
+
+.pricing-card{
+  text-align:center;
+  position:relative;
+}
+.pricing-card.featured{
+  border:2px solid var(--gold);
+  transform:scale(1.03);
+}
+.pricing-card .featured-tag{
+  position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+  background:var(--gold); color:var(--espresso);
+  padding:5px 16px; border-radius:100px; font-size:.74rem; font-weight:700;
+}
+.pricing-card h3{ font-size:1.3rem; }
+.pricing-card .price{ font-family:var(--font-display); font-size:2.2rem; color:var(--espresso); margin:10px 0; }
+.pricing-card .price small{ font-size:1rem; color:var(--cocoa); font-family:var(--font-body); }
+.pricing-card ul{ text-align:start; margin:20px 0; display:flex; flex-direction:column; gap:10px; font-size:.92rem; flex-grow:1; }
+.pricing-card ul li{ display:flex; gap:8px; }
+.pricing-card ul li::before{ content:"✓"; color:var(--success); font-weight:700; }
+
+/* ==========================================================================
+   TESTIMONIALS
+   ========================================================================== */
+.testimonial{
+  background:var(--white);
+  border-radius:var(--radius-md);
+  padding:28px;
+  box-shadow:var(--shadow-card);
+  border:1px solid var(--line);
+}
+.testimonial p{ font-style:italic; color:var(--espresso); }
+.testimonial .who{ display:flex; align-items:center; gap:12px; margin-top:16px; font-weight:700; font-size:.9rem; }
+.testimonial .avatar{
+  width:42px; height:42px; border-radius:50%;
+  background:linear-gradient(135deg, var(--gold-light), var(--blush));
+  flex-shrink:0;
+}
+
+/* ==========================================================================
+   FAQ ACCORDION
+   ========================================================================== */
+.faq{ max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
+.faq-item{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+}
+.faq-item summary{
+  padding:18px 22px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  list-style:none;
+  gap:16px;
+}
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item summary::after{
+  content:"+";
+  font-size:1.4rem;
+  color:var(--gold);
+  flex-shrink:0;
+  transition:transform .2s ease;
+}
+.faq-item[open] summary::after{ transform:rotate(45deg); }
+.faq-item .faq-answer{ padding:0 22px 20px; color:var(--cocoa); }
+
+/* ==========================================================================
+   STEPS / PROCESS
+   ========================================================================== */
+.steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; counter-reset:step; }
+/* Steps grid stacking breakpoints now live in the consolidated RESPONSIVE section at the end of this file. */
+.step{ text-align:center; }
+.step .num{
+  width:46px; height:46px; border-radius:50%;
+  background:var(--cocoa); color:var(--ivory);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-size:1.2rem;
+  margin:0 auto 14px;
+}
+.step h4{ font-size:1.05rem; }
+.step p{ font-size:.9rem; color:var(--cocoa); }
+
+/* ==========================================================================
+   CTA BANNER
+   ========================================================================== */
+.cta-banner{
+  background:var(--espresso);
+  color:var(--ivory);
+  border-radius:var(--radius-lg);
+  padding:56px 40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.cta-banner::before{
+  content:"";
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 60% 60% at 50% 0%, rgba(201,161,94,0.28), transparent 70%);
+}
+.cta-banner h2{ color:var(--ivory); position:relative; }
+.cta-banner p{ color:var(--gold-light); max-width:56ch; margin-inline:auto; position:relative; }
+.cta-banner .btn-row{ justify-content:center; position:relative; }
+
+/* ==========================================================================
+   FORMS (contact / apply)
+   ========================================================================== */
+.form-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius-md);
+  padding:30px;
+  box-shadow:var(--shadow-card);
+}
+.form-card h3{ font-size:1.2rem; }
+.form-card p{ font-size:.92rem; color:var(--cocoa); }
+.contact-links{ display:flex; flex-direction:column; gap:10px; margin-top:16px; }
+.contact-links a{ font-weight:700; text-decoration:underline; }
+
+/* ==========================================================================
+   LEGAL PAGE
+   ========================================================================== */
+.legal-nav{
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin-bottom:40px;
+  padding:20px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:var(--radius-md);
+}
+.legal-nav a{
+  font-size:.84rem; font-weight:700;
+  padding:8px 14px;
+  border:1px solid var(--line);
+  border-radius:100px;
+  color:var(--cocoa);
+}
+.legal-nav a:hover{ background:var(--beige); }
+.legal-section{ margin-bottom:44px; scroll-margin-top:100px; }
+.legal-section h2{ font-size:1.4rem; border-bottom:2px solid var(--gold); padding-bottom:10px; display:inline-block; }
+.legal-section p, .legal-section li{ color:var(--espresso); font-size:.96rem; }
+.legal-section ul{ display:flex; flex-direction:column; gap:8px; margin:14px 0; }
+.legal-section ul li::before{ content:"—"; margin-inline-end:8px; color:var(--gold); }
+.legal-meta{ font-size:.85rem; color:var(--cocoa); }
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.site-footer{
+  background:var(--espresso);
+  color:var(--ivory);
+  padding:64px 0 28px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:36px;
+  padding-bottom:40px;
+  border-bottom:1px solid rgba(251,246,238,0.15);
+}
+/* Footer grid stacking breakpoints now live in the consolidated RESPONSIVE section at the end of this file. */
+.footer-grid h4{ color:var(--gold-light); font-size:.85rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:16px; font-family:var(--font-body); }
+.footer-grid ul{ display:flex; flex-direction:column; gap:10px; font-size:.92rem; }
+.footer-grid a:hover{ color:var(--gold-light); }
+.footer-brand p{ color:rgba(251,246,238,0.75); font-size:.92rem; max-width:34ch; }
+.footer-bottom{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  padding-top:24px; font-size:.8rem; color:rgba(251,246,238,0.6);
+}
+
+/* ==========================================================================
+   SCROLL REVEAL ANIMATION
+   ========================================================================== */
+.reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.is-visible{ opacity:1; transform:translateY(0); }
+
+/* ==========================================================================
+   PAGE HERO (secondary pages)
+   ========================================================================== */
+.page-hero{
+  padding:64px 0 56px;
+  text-align:center;
+  background:linear-gradient(180deg, var(--blush), var(--ivory));
+}
+.page-hero h1{ font-size:clamp(2rem,3.4vw,2.8rem); }
+.page-hero p{ max-width:640px; margin:0 auto; color:var(--cocoa); font-size:1.05rem; }
+
+/* ==========================================================================
+   MISC
+   ========================================================================== */
+.divider-icon{ text-align:center; color:var(--gold); font-size:1.4rem; margin:8px 0 32px; }
+.two-col{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+/* two-col stacking breakpoint now lives in the consolidated RESPONSIVE section at the end of this file. */
+.list-check{ display:flex; flex-direction:column; gap:12px; margin:20px 0; }
+.list-check li{ display:flex; gap:10px; align-items:flex-start; }
+.list-check li::before{ content:"✓"; color:var(--success); font-weight:700; margin-top:2px; }
+.skip-link{
+  position:absolute; inset-inline-start:-9999px; top:0; background:var(--gold); color:var(--espresso);
+  padding:10px 16px; z-index:2000; border-radius:0 0 8px 0; font-weight:700;
+}
+.skip-link:focus{ inset-inline-start:0; }
+
+/* ==========================================================================
+   RESPONSIVE
+   --------------------------------------------------------------------------
+   Everything below is additive: it only adjusts layout/spacing/sizing for
+   smaller screens. Desktop (>1024px) styles above are untouched.
+
+   Three breakpoints, applied in this order on purpose — a narrow screen
+   matches ALL THREE blocks at once, so later blocks (480px) correctly
+   override earlier ones (1024px) for the same property:
+     1) max-width: 1024px  → tablets (portrait + landscape), small laptops
+     2) max-width: 768px   → large phones, tablets in portrait
+     3) max-width: 480px   → phones
+
+   Works identically for English (LTR) and Hebrew (RTL): logical properties
+   (flex-start/flex-end, margin-inline, padding-inline, gap) are used
+   wherever direction matters, instead of hardcoded left/right.
+   ========================================================================== */
+
+/* -------------------- 1024px — tablets & small laptops -------------------- */
+@media (max-width: 1024px){
+  .container{ padding:0 20px; }
+  .section{ padding:72px 0; }
+  .section--tight{ padding:48px 0; }
+
+  /* Nav: switch to the hamburger menu here so the 8-link nav + language
+     switch + Apply button never get cramped on tablets.
+     NOTE: max-height uses a plain viewport unit (80vh), not a percentage.
+     A percentage here would resolve against .nav-links' containing block
+     (.site-header), whose height is auto/content-based — percentages
+     against an indefinite-height ancestor are undefined per spec and can
+     resolve inconsistently across browsers/reflows (this was the cause of
+     the dropdown occasionally collapsing to near-zero height on mobile). */
+  .nav-links{
+    position:absolute; top:100%; inset-inline:0;
+    flex-direction:column;
+    background:var(--ivory);
+    padding:20px 24px 28px;
+    border-bottom:1px solid var(--line);
+    align-items:flex-start;
+    gap:16px;
+    display:none;
+    max-height:80vh;
+    overflow-y:auto;
+  }
+  .nav-links.is-open{ display:flex; }
+  .nav-toggle{ display:flex; flex-shrink:0; }
+  .nav-actions .btn{ display:none; }
+  .nav-actions{ gap:10px; }
+  .nav{ padding:14px 20px; }
+
+  /* Hero: stack the copy above the recipe-card visual */
+  .hero{ padding:56px 0 64px; }
+  .hero .container{ grid-template-columns:1fr; gap:40px; }
+  .hero .lede{ max-width:100%; }
+  .recipe-card{ max-width:400px; margin:0 auto; transform:rotate(1deg); }
+
+  /* Card grids: 3/4 columns become 2 on tablets */
+  .grid-3, .grid-4{ grid-template-columns:repeat(2,1fr); }
+  .steps{ grid-template-columns:repeat(2,1fr); }
+
+  .pricing-card.featured{ transform:none; }
+}
+
+/* -------------------- 768px — large phones & portrait tablets -------------------- */
+@media (max-width: 768px){
+  .section{ padding:56px 0; }
+  .section-head{ margin-bottom:40px; }
+
+  h1{ font-size:clamp(1.9rem, 6vw, 2.6rem); }
+  h2{ font-size:clamp(1.5rem, 5vw, 2rem); }
+  h3{ font-size:clamp(1.15rem, 4vw, 1.4rem); }
+  .hero h1{ font-size:clamp(1.9rem, 7vw, 2.6rem); }
+  .page-hero h1{ font-size:clamp(1.8rem, 6vw, 2.4rem); }
+
+  /* Every card grid and the two-column layout drop to a single column */
+  .grid-2, .grid-3, .grid-4{ grid-template-columns:1fr; }
+  .two-col{ grid-template-columns:1fr; gap:32px; }
+  .footer-grid{ grid-template-columns:1fr 1fr; gap:28px; }
+
+  .trust-strip{ gap:18px 28px; padding:22px 0; }
+
+  /* Buttons: allow wrapping instead of forcing nowrap on narrower screens */
+  .btn{ white-space:normal; text-align:center; }
+  .btn-row{ gap:12px; }
+
+  .cta-banner{ padding:40px 24px; border-radius:var(--radius-md); }
+
+  .legal-nav{ gap:8px; padding:16px; }
+  .legal-nav a{ font-size:.8rem; padding:7px 12px; }
+
+  .form-card{ padding:24px; }
+}
+
+/* -------------------- 480px — phones -------------------- */
+@media (max-width: 480px){
+  .container{ padding:0 16px; }
+  .section{ padding:44px 0; }
+  .section--tight{ padding:36px 0; }
+
+  .brand{ font-size:1.1rem; }
+  .brand span{ font-size:.55rem; }
+  .nav{ padding:12px 16px; }
+  .lang-toggle button{ padding:6px 11px; font-size:.74rem; }
+  .nav-toggle{ width:38px; height:38px; }
+
+  .hero{ padding:40px 0 48px; }
+  .hero-legal{ font-size:.85rem; }
+  .recipe-card{ padding:26px 20px 22px; }
+  .recipe-card h3{ font-size:1.25rem; }
+
+  /* Recipe catalog: guarantee exactly 1 column on phones, even though
+     the auto-fit grid above already collapses to 1 column naturally at
+     these widths — this makes the requirement explicit and robust. */
+  .recipe-grid{ grid-template-columns:1fr; }
+
+  /* Recipe modal: nearly full-width, buy buttons stack vertically */
+  .modal-overlay{ padding:10px; }
+  .modal-box{ max-width:100%; max-height:94vh; }
+  .modal-buy-buttons{ flex-direction:column; }
+  .modal-buy-buttons .btn{ width:100%; min-width:0; }
+
+  .steps{ grid-template-columns:1fr; }
+  .footer-grid{ grid-template-columns:1fr; gap:28px; }
+
+  .btn{ padding:13px 22px; font-size:.92rem; }
+  .btn-row{ flex-direction:column; align-items:stretch; }
+  .btn-row .btn{ width:100%; }
+  .section-head .btn-row{ align-items:center; }
+
+  /* Product cards: stack the paired Buy buttons instead of squeezing
+     them side by side */
+  .product-card .btn-pair{ flex-direction:column; }
+  .product-card .btn-pair .btn{ width:100%; min-width:0; }
+
+  .card, .form-card{ padding:20px; }
+  .testimonial{ padding:22px; }
+
+  .cta-banner{ padding:32px 18px; }
+  .cta-banner .btn-row{ flex-direction:column; }
+
+  .pricing-card{ padding:22px; }
+  .pricing-card .price{ font-size:1.8rem; }
+
+  .footer-bottom{ flex-direction:column; align-items:flex-start; gap:8px; }
+
+  .legal-nav{ flex-direction:column; align-items:stretch; }
+  .legal-nav a{ text-align:center; }
+}
+
+/* -------------------- Safety net: no horizontal scroll anywhere -------------------- */
+@media (max-width: 1024px){
+  html, body{ max-width:100%; overflow-x:hidden; }
+  table{ display:block; max-width:100%; overflow-x:auto; }
+}

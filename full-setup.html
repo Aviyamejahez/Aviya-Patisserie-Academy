@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <script>
+    /* Apply saved language IMMEDIATELY, before first paint, so the page never
+       flashes the wrong language/direction while script.js is still loading
+       (this was the main cause of the Hebrew "blank on load" issue). This is
+       safe even if localStorage is empty/unavailable — script.js re-applies
+       the same logic on DOMContentLoaded regardless. */
+    (function () {
+      try {
+        var l = localStorage.getItem("aviya-lang");
+        if (l === "he" || l === "en") {
+          document.documentElement.setAttribute("lang", l);
+          document.documentElement.setAttribute("dir", l === "he" ? "rtl" : "ltr");
+        }
+      } catch (e) { }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Home Bakery Business Setup — Aviya Patisserie</title>
+  <meta name="description"
+    content="The complete package to turn your baking dream into a real home bakery business: recipes, pricing, branding, website guidance, and personal mentorship.">
+  <meta property="og:title" content="Full Home Bakery Business Setup — Aviya Patisserie">
+  <meta property="og:description" content="The complete, guided path from baking dream to real home bakery business.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@400;600;700&family=Assistant:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=final-mobile-2">
+</head>
+
+<body>
+  <a class="skip-link" href="#main"><span class="lang-en">Skip to content</span><span class="lang-he">דלגי
+      לתוכן</span></a>
+
+  <header class="site-header">
+    <div class="nav container">
+      <a href="index.html" class="brand">Aviya Patisserie<span class="lang-en">Home Bakery Business Academy</span><span
+          class="lang-he">האקדמיה לעסקי אפייה מהבית</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html"><span class="lang-en">Home</span><span class="lang-he">בית</span></a>
+        <a href="digital-products.html"><span class="lang-en">Digital Products</span><span class="lang-he">מוצרים
+            דיגיטליים</span></a>
+        <a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי אישי</span></a>
+        <a href="full-setup.html" aria-current="page"><span class="lang-en">Full Setup</span><span class="lang-he">הקמת
+            עסק מלא</span></a>
+        <a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span class="lang-he">מיתוג
+            ואתרים</span></a>
+        <a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+            חינם</span></a>
+        <a href="about.html"><span class="lang-en">About</span><span class="lang-he">אודות</span></a>
+        <a href="contact.html"><span class="lang-en">Contact</span><span class="lang-he">צרי קשר</span></a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language switch">
+          <button data-lang-btn="en" aria-pressed="true">EN</button>
+          <button data-lang-btn="he" aria-pressed="false">HE</button>
+        </div>
+        <a href="contact.html" class="btn btn-gold btn-sm"><span class="lang-en">Apply Now</span><span
+            class="lang-he">להרשמה</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow lang-en" style="justify-content:center;">The Complete Package</p>
+        <p class="eyebrow lang-he" style="justify-content:center;">החבילה המלאה</p>
+        <h1 class="lang-en">Full Home Bakery Business Setup</h1>
+        <h1 class="lang-he">הקמת עסק אפייה ביתי מלא</h1>
+        <p class="lang-en">The complete, guided path for a woman ready to turn her baking dream into a real, organized,
+          profitable home bakery business.</p>
+        <p class="lang-he">המסלול המלא והמלווה לאישה שמוכנה להפוך את חלום האפייה שלה לעסק אפייה ביתי אמיתי, מאורגן
+          ורווחי.</p>
+        <div class="btn-row" style="justify-content:center;">
+          <a href="contact.html" class="btn btn-primary"><span class="lang-en">Apply for the Full Setup
+              Package</span><span class="lang-he">להגשת בקשה לחבילה המלאה</span></a>
+        </div>
+        <p class="small muted" style="margin-top:16px;">
+          <span class="lang-en">Pricing is customized to your business. A signed contract is required before work
+            begins.</span>
+          <span class="lang-he">התמחור מותאם אישית לעסק שלך. נדרש חוזה חתום לפני תחילת העבודה.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ WHAT'S INCLUDED ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">Everything You Need</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">כל מה שאת צריכה</p>
+          <h2 class="lang-en">What's Included</h2>
+          <h2 class="lang-he">מה כלול בחבילה</h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card reveal">
+            <h3 class="small lang-en">Personal business assessment</h3>
+            <h3 class="small lang-he">אבחון עסקי אישי</h3>
+            <p class="small muted lang-en">A clear look at where you are and what you need.</p>
+            <p class="small muted lang-he">מבט ברור על המצב הנוכחי ומה נדרש.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Menu planning</h3>
+            <h3 class="small lang-he">בניית תפריט</h3>
+            <p class="small muted lang-en">A focused, sellable menu built around your strengths.</p>
+            <p class="small muted lang-he">תפריט ממוקד וניתן למכירה, בנוי סביב החוזקות שלך.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Israeli recipes</h3>
+            <h3 class="small lang-he">מתכונים ישראליים</h3>
+            <p class="small muted lang-en">Recipes adapted to U.S. ingredients, ready to bake and sell.</p>
+            <p class="small muted lang-he">מתכונים מותאמים לחומרי גלם אמריקאיים, מוכנים לאפייה ומכירה.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Pricing strategy</h3>
+            <h3 class="small lang-he">אסטרטגיית תמחור</h3>
+            <p class="small muted lang-en">Pricing that protects your time and your profit.</p>
+            <p class="small muted lang-he">תמחור ששומר על הזמן והרווח שלך.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Excel pricing tools</h3>
+            <h3 class="small lang-he">כלי תמחור ב-Excel</h3>
+            <p class="small muted lang-en">Ready-made calculators for every product you sell.</p>
+            <p class="small muted lang-he">מחשבונים מוכנים לכל מוצר שאת מוכרת.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Order management templates</h3>
+            <h3 class="small lang-he">תבניות ניהול הזמנות</h3>
+            <p class="small muted lang-en">Track orders, deposits, and deadlines with ease.</p>
+            <p class="small muted lang-he">מעקב קל אחר הזמנות, מקדמות ותאריכי יעד.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Client message scripts</h3>
+            <h3 class="small lang-he">תסריטי הודעות ללקוחות</h3>
+            <p class="small muted lang-en">Sound professional from the very first message.</p>
+            <p class="small muted lang-he">להישמע מקצועית כבר מההודעה הראשונה.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Kitchen workflow plan</h3>
+            <h3 class="small lang-he">תוכנית עבודה במטבח</h3>
+            <p class="small muted lang-en">A system for baking days that doesn't burn you out.</p>
+            <p class="small muted lang-he">מערכת לימי אפייה שלא שוחקת אותך.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Photography guide</h3>
+            <h3 class="small lang-he">מדריך צילום</h3>
+            <p class="small muted lang-en">Simple techniques to make your cakes look irresistible.</p>
+            <p class="small muted lang-he">טכניקות פשוטות שהופכות את העוגות שלך לבלתי ניתנות לעמידה בפניהן.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Social media marketing guide</h3>
+            <h3 class="small lang-he">מדריך שיווק ברשתות</h3>
+            <p class="small muted lang-en">A content plan built for a home bakery, not a corporation.</p>
+            <p class="small muted lang-he">תוכנית תוכן שנבנתה לעסק אפייה ביתי, לא לתאגיד.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Logo / basic branding</h3>
+            <h3 class="small lang-he">לוגו / מיתוג בסיסי</h3>
+            <p class="small muted lang-en">A look that matches the quality of what you bake.</p>
+            <p class="small muted lang-he">מראה שמתאים לאיכות של מה שאת אופה.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Website setup guidance</h3>
+            <h3 class="small lang-he">הקמת אתר</h3>
+            <p class="small muted lang-en">Full building service for your bakery website.</p>
+            <p class="small muted lang-he">שירות בנייה מלא לאתר שלך.</p>
+          </div>
+        </div>
+        <div class="grid grid-2" style="margin-top:28px;">
+          <div class="card reveal">
+            <h3 class="small lang-en">Launch plan</h3>
+            <h3 class="small lang-he">תוכנית השקה</h3>
+            <p class="small muted lang-en">A clear, step-by-step plan for going live with confidence.</p>
+            <p class="small muted lang-he">תוכנית ברורה, שלב-אחר-שלב, ליציאה לדרך בביטחון.</p>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Personal mentorship</h3>
+            <h3 class="small lang-he">ליווי אישי</h3>
+            <p class="small muted lang-en">Direct support from Aviya throughout your entire setup.</p>
+            <p class="small muted lang-he">תמיכה ישירה מאביה לאורך כל תהליך ההקמה.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHO IT'S FOR ============ -->
+    <section class="section section--alt">
+      <div class="container two-col">
+        <div class="reveal">
+          <p class="eyebrow lang-en">Is This You?</p>
+          <p class="eyebrow lang-he">זה מתאים לך?</p>
+          <h2 class="lang-en">Built for the woman who is done waiting</h2>
+          <h2 class="lang-he">בנוי לאישה שכבר לא רוצה לחכות</h2>
+          <p class="lang-en">This package is for someone who wants to turn her baking dream into a real home bakery
+            business — not a side hobby with no structure.</p>
+          <p class="lang-he">החבילה הזו מיועדת למי שרוצה להפוך את חלום האפייה שלה לעסק אפייה ביתי אמיתי — לא תחביב צדדי
+            ללא מבנה וסדר.</p>
+        </div>
+        <div class="reveal">
+          <ul class="list-check">
+            <li><span class="lang-en">You're ready to treat your baking as a real business.</span><span
+                class="lang-he">את מוכנה להתייחס לאפייה שלך כעסק אמיתי.</span></li>
+            <li><span class="lang-en">You want high-quality, authentic recipes people will pay for.</span><span class="lang-he">את רוצה
+                מתכונים איכותיים ומקוריים שאנשים ישלמו עבורם.</span></li>
+            <li><span class="lang-en">You want to stop guessing at your prices.</span><span class="lang-he">את רוצה
+                להפסיק לנחש את המחירים שלך.</span></li>
+            <li><span class="lang-en">You want a brand and website that look professional.</span><span
+                class="lang-he">את רוצה מותג ואתר שנראים מקצועיים.</span></li>
+            <li><span class="lang-en">You want a mentor who has actually done this.</span><span class="lang-he">את רוצה
+                מנטורית שבאמת עשתה את זה.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESS ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">How It Works</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">איך זה עובד</p>
+          <h2 class="lang-en">From Application to Launch</h2>
+          <h2 class="lang-he">מהגשת הבקשה ועד ההשקה</h2>
+        </div>
+        <div class="steps reveal">
+          <div class="step">
+            <div class="num">1</div>
+            <h4 class="lang-en">Apply</h4>
+            <h4 class="lang-he">הגישי בקשה</h4>
+            <p class="lang-en">Tell me about your dream and where you're starting from.</p>
+            <p class="lang-he">ספרי לי על החלום שלך ומאיפה את מתחילה.</p>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <h4 class="lang-en">Consultation</h4>
+            <h4 class="lang-he">שיחת ייעוץ</h4>
+            <p class="lang-en">We map your business and agree on a custom scope and price.</p>
+            <p class="lang-he">נמפה את העסק שלך ונסכם על היקף ומחיר מותאמים אישית.</p>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <h4 class="lang-en">Contract &amp; deposit</h4>
+            <h4 class="lang-he">חוזה ומקדמה</h4>
+            <p class="lang-en">We sign a service agreement and collect a deposit.</p>
+            <p class="lang-he">חותמות על הסכם שירות וניגבת מקדמה.</p>
+          </div>
+          <div class="step">
+            <div class="num">4</div>
+            <h4 class="lang-en">Build &amp; launch</h4>
+            <h4 class="lang-he">בנייה והשקה</h4>
+            <p class="lang-en">We build your business together and celebrate your launch.</p>
+            <p class="lang-he">בונות את העסק שלך יחד וחוגגות את ההשקה.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--blush">
+      <div class="container">
+        <div class="cta-banner reveal">
+          <h2 class="lang-en">Turn your baking dream into a real business</h2>
+          <h2 class="lang-he">הפכי את חלום האפייה שלך לעסק אמיתי</h2>
+          <p class="lang-en">Apply for the Full Setup Package and let's build your home bakery business from the ground
+            up.</p>
+          <p class="lang-he">הגישי בקשה לחבילה המלאה ונבנה יחד את עסק האפייה הביתי שלך מהיסוד.</p>
+          <div class="btn-row"><a href="contact.html" class="btn btn-gold"><span class="lang-en">Apply for the Full
+                Setup Package</span><span class="lang-he">להגשת בקשה לחבילה המלאה</span></a></div>
+          <p class="small" style="margin-top:14px;color:var(--gold-light);">
+            <span class="lang-en">Pricing is customized. A signed contract is required before work begins.</span>
+            <span class="lang-he">התמחור מותאם אישית. נדרש חוזה חתום לפני תחילת העבודה.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand" style="color:var(--ivory);">Aviya Patisserie</div>
+          <p class="lang-en">Home Bakery Business Academy — helping women turn their baking dream into an organized,
+            profitable home bakery business.</p>
+          <p class="lang-he">האקדמיה לעסקי אפייה מהבית — עוזרת לנשים להפוך את חלום האפייה שלהן לעסק אפייה ביתי מאורגן
+            ורווחי.</p>
+        </div>
+        <div>
+          <h4 class="lang-en">Explore</h4>
+          <h4 class="lang-he">ניווט</h4>
+          <ul>
+            <li><a href="digital-products.html"><span class="lang-en">Digital Products</span><span
+                  class="lang-he">מוצרים דיגיטליים</span></a></li>
+            <li><a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי
+                  אישי</span></a></li>
+            <li><a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמה
+                  מלאה</span></a></li>
+            <li><a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span
+                  class="lang-he">מיתוג ואתרים</span></a></li>
+            <li><a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+                  חינם</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Company</h4>
+          <h4 class="lang-he">החברה</h4>
+          <ul>
+            <li><a href="about.html"><span class="lang-en">About Aviya</span><span class="lang-he">אודות אביה</span></a>
+            </li>
+            <li><a href="contact.html"><span class="lang-en">Contact / Apply</span><span class="lang-he">צרי קשר /
+                  הרשמה</span></a></li>
+            <li><a href="legal.html"><span class="lang-en">Legal &amp; Policies</span><span class="lang-he">תנאים
+                  ומדיניות</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Connect</h4>
+          <h4 class="lang-he">בואי נתחבר</h4>
+          <ul>
+            <li><a>Aviya.patisserie@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/aviya.patisserie?igsh=MTN5endpODNoZXkyZQ==" target="_blank"
+                rel="noopener"><span class="lang-en">Instagram</span><span class="lang-he">אינסטגרם</span></a></li>
+            <li><a href="https://www.facebook.com/share/17By1hmKSk/" target="_blank" rel="noopener"><span
+                  class="lang-en">Facebook</span><span class="lang-he">פייסבוק</span></a></li>
+            <li><a href="https://wa.link/f8jt2z" target="_blank" rel="noopener"><span
+                  class="lang-en">WhatsApp</span><span class="lang-he">וואטסאפ</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span class="lang-en">&copy; <span data-year></span> Aviya Patisserie. All rights reserved.</span><span
+            class="lang-he">&copy; <span data-year></span> Aviya Patisserie. כל הזכויות שמורות.</span></p>
+        <p class="lang-en">Educational content only — not legal, tax, or food-licensing advice. See <a href="legal.html"
+            style="text-decoration:underline;">Legal &amp; Policies</a>.</p>
+        <p class="lang-he">תוכן חינוכי בלבד — אינו ייעוץ משפטי, מס או רישוי מזון. ראי <a href="legal.html"
+            style="text-decoration:underline;">תנאים ומדיניות</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=final-mobile-2"></script>
+</body>
+
+</html>

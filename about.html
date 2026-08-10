@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+<script>
+  /* Apply saved language IMMEDIATELY, before first paint, so the page never
+     flashes the wrong language/direction while script.js is still loading
+     (this was the main cause of the Hebrew "blank on load" issue). This is
+     safe even if localStorage is empty/unavailable — script.js re-applies
+     the same logic on DOMContentLoaded regardless. */
+  (function(){
+    try{
+      var l = localStorage.getItem("aviya-lang");
+      if(l === "he" || l === "en"){
+        document.documentElement.setAttribute("lang", l);
+        document.documentElement.setAttribute("dir", l === "he" ? "rtl" : "ltr");
+      }
+    }catch(e){}
+  })();
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Aviya Patisserie</title>
+  <meta name="description"
+    content="Meet the founder of Aviya Patisserie — 12 years of home baking experience helping women turn their baking dream into a real business.">
+  <meta property="og:title" content="About — Aviya Patisserie">
+  <meta property="og:description"
+    content="12 years of home baking experience, now helping women build their own bakery businesses.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@400;600;700&family=Assistant:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=final-mobile-2">
+  <style>
+    /* ============================================================
+       ABOUT PAGE — story & mission layout refinements only.
+       Scoped entirely to .story-* / .mission-* / .toolkit-list
+       classes below; does not touch header, footer, nav, colors,
+       fonts, or any other page style. Falls back gracefully if the
+       brand CSS variables below aren't defined in styles.css.
+       ============================================================ */
+    .story-blocks,
+    .mission-blocks{ display:flex; flex-direction:column; }
+
+    .story-block,
+    .mission-block{
+      padding:20px 0;
+      border-top:1px solid var(--line, rgba(58,42,32,0.12));
+    }
+    .story-block:first-child,
+    .mission-block:first-child{ border-top:none; padding-top:0; }
+    .story-block .eyebrow,
+    .mission-block .eyebrow{ margin-bottom:10px; }
+    .story-block p,
+    .mission-block p{ margin:0 0 14px; }
+    .story-block p:last-child,
+    .mission-block p:last-child{ margin-bottom:0; }
+    .mission-block p + .eyebrow{ margin-top:4px; }
+
+    .story-block--closing{
+      background:var(--ivory, #FBF6EE);
+      border:1px solid var(--line, rgba(58,42,32,0.12));
+      border-radius:var(--radius-md, 14px);
+      padding:24px 26px;
+      margin-top:8px;
+    }
+
+    .story-callout{
+      margin-top:26px;
+      padding:24px 28px;
+      background:var(--blush, #F4DED3);
+      border-radius:var(--radius-md, 14px);
+      text-align:center;
+    }
+    .story-callout p{
+      margin:0;
+      font-size:1.1rem;
+      font-style:italic;
+      color:var(--cocoa-dark, #4A2C18);
+      line-height:1.6;
+    }
+
+    .mission-block--vision{
+      background:var(--ivory, #FBF6EE);
+      border:1px solid var(--line, rgba(58,42,32,0.12));
+      border-radius:var(--radius-md, 14px);
+      padding:24px 26px;
+      margin-top:8px;
+      text-align:center;
+    }
+    .mission-block--vision .eyebrow{ justify-content:center; margin-bottom:10px; }
+    .mission-block--vision p{
+      font-size:1.08rem;
+      color:var(--cocoa-dark, #4A2C18);
+      margin:0;
+    }
+
+    .mission-note{
+      margin-top:18px;
+      font-size:.85rem;
+      color:var(--cocoa, #6B4226);
+      opacity:.85;
+    }
+
+    .toolkit-list{
+      list-style:none;
+      margin:6px 0 14px;
+      padding:0;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px 20px;
+    }
+    .toolkit-list li{
+      position:relative;
+      padding-inline-start:20px;
+      font-size:.95rem;
+      line-height:1.5;
+    }
+    .toolkit-list li::before{
+      content:"";
+      position:absolute;
+      inset-inline-start:0;
+      top:.6em;
+      width:7px; height:7px;
+      border-radius:50%;
+      background:var(--gold, #C9A15E);
+    }
+
+    @media (max-width:640px){
+      .story-block, .mission-block{ padding:16px 0; }
+      .story-block--closing, .story-callout, .mission-block--vision{ padding:20px 18px; }
+      .toolkit-list{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main"><span class="lang-en">Skip to content</span><span class="lang-he">דלגי
+      לתוכן</span></a>
+
+  <header class="site-header">
+    <div class="nav container">
+      <a href="index.html" class="brand">Aviya Patisserie<span class="lang-en">Home Bakery Business Academy</span><span
+          class="lang-he">האקדמיה לעסקי אפייה מהבית</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html"><span class="lang-en">Home</span><span class="lang-he">בית</span></a>
+        <a href="digital-products.html"><span class="lang-en">Digital Products</span><span class="lang-he">מוצרים
+            דיגיטליים</span></a>
+        <a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי אישי</span></a>
+        <a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמת עסק מלא</span></a>
+        <a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span class="lang-he">מיתוג
+            ואתרים</span></a>
+        <a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+            חינם</span></a>
+        <a href="about.html" aria-current="page"><span class="lang-en">About</span><span
+            class="lang-he">אודות</span></a>
+        <a href="contact.html"><span class="lang-en">Contact</span><span class="lang-he">צרי קשר</span></a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language switch">
+          <button data-lang-btn="en" aria-pressed="true">EN</button>
+          <button data-lang-btn="he" aria-pressed="false">HE</button>
+        </div>
+        <a href="contact.html" class="btn btn-gold btn-sm"><span class="lang-en">Apply Now</span><span
+            class="lang-he">להרשמה</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow lang-en" style="justify-content:center;">Our Story</p>
+        <p class="eyebrow lang-he" style="justify-content:center;">הסיפור שלנו</p>
+        <h1 class="lang-en">Meet Aviya</h1>
+        <h1 class="lang-he">היכרות עם אביה</h1>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container two-col">
+        <div class="reveal">
+           <div class="img-placeholder" role="img" aria-label="founder photo- aviya patisserie" style="background-image: url('images/aviya.png'); background-size: cover; background-position: center;">
+              
+            
+            <span class="lang-en">Placeholder: founder photo</span><span class="lang-he">מקום לתמונת המייסדת</span>
+          </div>
+        </div>
+        <div class="reveal">
+          <p class="eyebrow lang-en">12 Years in the Making</p>
+          <p class="eyebrow lang-he">12 שנים בעשייה</p>
+          <h2 class="lang-en">I built my dream with my own two hands — now I’m here to help you build yours.</h2>
+          <h2 class="lang-he">בניתי את החלום שלי בעשר אצבעות — ועכשיו אני כאן לעזור לך לבנות את שלך.</h2>
+        <div class="story-blocks">
+          <div class="story-block reveal">
+            <p class="eyebrow lang-en">The Beginning of the Dream</p>
+            <p class="eyebrow lang-he">תחילתו של החלום</p>
+            <p class="lang-en">I’m Aviya, the founder of Aviya Patisserie — Home Bakery Business Academy.</p>
+            <p class="lang-en">My story began long before it became a business. As early as age 16, I would stand in my parents’ kitchen baking birthday cakes, Shabbat desserts, and cakes for family gatherings. I was creating things people didn’t expect to see from a girl my age, and guests who came to our home were shocked that I had made everything myself.</p>
+            <p class="lang-en">That’s where the dream first began to light up inside me. A dream to turn my love for baking into something real.</p>
+            <p class="lang-en">At 18, after leaving boarding school, I continued baking from home. I still didn’t have an organized business, but that dream was burning inside me. I knew there was something in me I couldn’t ignore. I knew I wanted to create, bake, sell, and build something of my own — even if I didn’t yet know exactly how.</p>
+            <p class="lang-he">אני אביה, המייסדת של Aviya Patisserie — Home Bakery Business Academy.</p>
+            <p class="lang-he">הסיפור שלי התחיל הרבה לפני שזה הפך לעסק. כבר כבת 16 הייתי עומדת במטבח של ההורים שלי ואופה עוגות ימי הולדת, קינוחים לשבת ועוגות לאירוחים משפחתיים. הייתי מכינה דברים שאנשים לא ציפו לראות מנערה בגילי, והאורחים שהיו מגיעים הביתה היו בהלם שאני זו שהכנתי את הכול לבד.</p>
+            <p class="lang-he">שם, בתוך המטבח הביתי, התחיל להידלק אצלי חלום. חלום להפוך את האהבה שלי לאפייה למשהו אמיתי.</p>
+            <p class="lang-he">בגיל 18, אחרי שיצאתי מהפנימייה, המשכתי לאפות מהבית. עדיין לא היה לי עסק מסודר, אבל החלום הזה בער בי. ידעתי שיש בי משהו שאני לא יכולה להתעלם ממנו. ידעתי שאני רוצה ליצור, לאפות, למכור ולבנות משהו משלי — גם אם עדיין לא ידעתי בדיוק איך.</p>
+          </div>
+          <div class="story-block reveal">
+            <p class="eyebrow lang-en">Learning &amp; Working Hard</p>
+            <p class="eyebrow lang-he">לימודים ועבודה קשה</p>
+            <p class="lang-en">At 20, I finally decided to study pastry professionally. It wasn’t an easy step. My parents wanted me to study a different profession, something they saw as more secure, and they didn’t support my decision to follow the world of baking. I didn’t have the money to pay for my studies, so I did what I had to do: I worked mornings as a cashier in a supermarket, and in the evenings I waitressed at events — just to pay for my education and keep moving closer to my dream.</p>
+            <p class="lang-en">Alongside my studies, I didn’t rely only on what I learned in class. I practiced constantly at home, tried again and again, made one cake after another, created more desserts, researched, tested, made mistakes, corrected them, and improved. I wanted to understand not only how to bake well — but how to turn it into something people would buy, love, and come back for.</p>
+            <p class="lang-he">בגיל 20 החלטתי סוף סוף ללכת ללמוד קונדיטוריה בצורה מקצועית. זה לא היה צעד פשוט. ההורים שלי רצו שאלמד מקצוע אחר, משהו שהם ראו כבטוח יותר, ולא תמכו ברצון שלי ללכת עם עולם האפייה. לא היה לי כסף לשלם על הלימודים, אז עשיתי מה שהייתי צריכה לעשות: עבדתי בבקרים כקופאית בסופר, ובערבים מלצרתי באירועים — רק כדי לממן את הלימודים שלי ולהמשיך להתקרב לחלום.</p>
+            <p class="lang-he">במקביל ללימודים, לא הסתפקתי רק במה שלמדתי בכיתה. התמקצעתי המון בבית, ניסיתי שוב ושוב, הכנתי עוד עוגה ועוד קינוח, חקרתי, בדקתי, טעיתי, תיקנתי ושיפרתי. רציתי להבין לא רק איך אופים טוב — אלא איך הופכים את זה למשהו שאנשים קונים, אוהבים וחוזרים אליו.</p>
+          </div>
+          <div class="story-block reveal">
+            <p class="eyebrow lang-en">Professional Experience</p>
+            <p class="eyebrow lang-he">ניסיון מקצועי</p>
+            <p class="lang-en">After my studies, I went to work at Roladin, a well-known patisserie chain, where I was responsible for the baking department. That period gave me so much professional experience, structure, pace, understanding of production, responsibility, and quality — but even while working there, my independent dream didn’t disappear. On the contrary, it only became stronger.</p>
+            <p class="lang-he">אחרי הלימודים הלכתי לעבוד ב־רולדין, רשת קונדיטוריה מוכרת, ושם הייתי אחראית על מחלקת האפייה. זו הייתה תקופה שנתנה לי המון ניסיון מקצועי, סדר, קצב עבודה, הבנה של ייצור, אחריות ואיכות — אבל גם תוך כדי העבודה שם, החלום העצמאי שלי לא נעלם. להפך, הוא רק התחזק.</p>
+          </div>
+          <div class="story-block reveal">
+            <p class="eyebrow lang-en">Building the Business, Alone</p>
+            <p class="eyebrow lang-he">בניית העסק — לבד</p>
+            <p class="lang-en">At the same time, I continued developing my own business: I produced, baked, marketed, cleaned, answered clients, took orders, packaged, coordinated, planned, researched, learned, and even built my own website by myself.</p>
+            <p class="lang-en">I made many mistakes along the way. Mistakes in pricing, mistakes in time management, mistakes in marketing, mistakes with clients, mistakes in organization and workload. There were hard days, setbacks, frustrations, sleepless nights, and many moments when I had to figure out on my own what the right thing to do was.</p>
+            <p class="lang-he">במקביל לעבודה, המשכתי לפתח את העסק העצמאי שלי.: ייצרתי, אפיתי, שיווקתי, ניקיתי, עניתי ללקוחות, קיבלתי הזמנות, ארזתי, תיאמתי, תכננתי, חקרתי, למדתי, ואפילו בניתי את האתר שלי בעצמי. עשיתי המון טעויות בדרך. טעויות בתמחור, טעויות בניהול זמן, טעויות בשיווק, טעויות מול לקוחות, טעויות בארגון ובעומס. היו ימים קשים, נפילות, תסכולים, לילות בלי שינה והרבה רגעים שבהם הייתי צריכה להבין לבד מה נכון לעשות.</p>
+          </div>
+          <div class="story-block reveal">
+            <p class="eyebrow lang-en">Mistakes That Became Growth</p>
+            <p class="eyebrow lang-he">טעויות שהפכו לצמיחה</p>
+            <p class="lang-en">But I learned from every mistake. Every setback became a lesson. Every challenge forced me to improve. And every step of the way helped shape me into someone more professional, sharp, and strong.</p>
+            <p class="lang-he">אבל מכל טעות למדתי. כל נפילה הפכה לשיעור. כל אתגר הכריח אותי להשתפר. וכל שלב בדרך בנה אותי להיות מקצועית, חדה וחזקה יותר.</p>
+          </div>
+          <div class="story-block reveal">
+            <p class="eyebrow lang-en">Business Success</p>
+            <p class="eyebrow lang-he">הצלחת העסק</p>
+            <p class="lang-en">Slowly, the business began to grow. More clients came, more orders came in, and more people heard about me. Over time, the business grew and became very profitable. I reached a point where I barely needed to advertise anymore — recommendations spread by word of mouth, and the work became strong, steady, and in demand.</p>
+            <p class="lang-he">לאט לאט העסק התחיל לגדול. עוד לקוחות הגיעו, עוד הזמנות נכנסו, עוד אנשים שמעו עליי. עם הזמן העסק גדל והפך לרווחי מאוד. הגעתי למצב שכבר כמעט לא הייתי צריכה לפרסם, ההמלצות עברו מפה לאוזן, והעבודה הייתה חזקה, יציבה ומבוקשת.</p>
+          </div>
+          <div class="story-block reveal">
+            <p class="eyebrow lang-en">Recipes, Adaptations &amp; Helping Other Businesses</p>
+            <p class="eyebrow lang-he">מתכונים, התאמות ועזרה לעסקים נוספים</p>
+            <p class="lang-en">Over the years, I developed my own Israeli-style recipes — recipes that bring the feeling of home, Shabbat, holidays, and family — and later adapted them to American ingredients, so women in the U.S. could bake, sell, and succeed with Israeli flavors even when the products around them were different from what they knew from Israel.</p>
+            <p class="lang-en">From this journey, I went on to build two additional successful food businesses in Israel, lead workshops, advise and support businesses in Israel and the U.S., and learn exactly where women and small businesses get stuck — and how to help them move forward in a much more organized, professional, and confident way.</p>
+            <p class="lang-he">במהלך השנים פיתחתי מתכונים ישראליים משלי — כאלה שמביאים טעם של בית, שבת, חגים ומשפחה — ובהמשך גם התאמתי אותם לחומרי גלם אמריקאיים, כדי שנשים בארה״ב יוכלו להכין, למכור ולהצליח עם טעמים ישראליים גם כשהמוצרים סביבן שונים ממה שהן מכירות מהארץ.</p>
+            <p class="lang-he">מתוך הדרך הזו הקמתי עוד שני עסקי אוכל מוצלחים בארץ, העברתי סדנאות, ייעצתי ועזרתי לעסקים בישראל ובארה״ב, ולמדתי לזהות בדיוק איפה נשים ועסקים קטנים נתקעים — ואיך אפשר לעזור להם להתקדם בצורה הרבה יותר מסודרת, מקצועית ובטוחה.</p>
+          </div>
+          <div class="story-block story-block--closing reveal">
+            <p class="eyebrow lang-en">Where I Stand Today</p>
+            <p class="eyebrow lang-he">איפה אני היום</p>
+            <p class="lang-en">Today, I bring more than recipes. I bring a story of hard work, persistence, setbacks, growth, real experience from the field, and a deep belief that a dream can become a profitable business — even when you start alone, even without support, and even when you have to build everything with your own two hands.</p>
+            <p class="lang-he">היום אני מביאה איתי לא רק מתכונים. אני מביאה איתי סיפור של עבודה קשה, התמדה, נפילות, צמיחה, ניסיון אמיתי מהשטח, והרבה אמונה בזה שחלום יכול להפוך לעסק רווחי — גם כשמתחילים לבד, גם כשאין תמיכה, וגם כשצריך לבנות הכול בעשר אצבעות.</p>
+          </div>
+        </div>
+
+        <div class="story-callout reveal">
+          <p class="lang-en">Everything I learned the hard way became the method I now use to help you start smarter.</p>
+          <p class="lang-he">כל מה שלמדתי בדרך הקשה הפך לשיטה שעוזרת לך להתחיל חכם יותר.</p>
+        </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container two-col">
+        <div class="reveal" style="order:2;">
+          <p class="eyebrow lang-en">Our Mission</p>
+          <p class="eyebrow lang-he">המשימה שלי</p>
+          <h2 class="lang-en">Helping everyone, and women in particular, build a business they are proud of</h2>
+          <h2 class="lang-he">לעזור לכולם ולנשים בפרט לבנות עסק שהן גאות בו</h2>
+        <div class="mission-blocks">
+          <div class="mission-block reveal">
+            <p class="lang-en">My mission is to help women turn their baking dream into a successful, organized, and profitable home bakery business — and to save them as much as possible from the hard road I had to walk alone.</p>
+            <p class="lang-he">ההמשימה שלי היא לעזור לנשים להפוך את חלום האפייה שלהן לעסק ביתי מצליח, מסודר ורווחי — ולחסוך להן כמה שאפשר את הדרך הקשה שאני עברתי לבד.</p>
+          </div>
+          <div class="mission-block reveal">
+            <p class="eyebrow lang-en">I Know How It Feels</p>
+            <p class="eyebrow lang-he">אני יודעת איך זה מרגיש</p>
+            <p class="lang-en">I know how hard it can be to make a dream come true. I know what it feels like to have talent, passion, and a big dream — but not enough structure, not enough confidence, not enough business knowledge, and sometimes not enough people who believe in it with you.</p>
+            <p class="lang-en">I know how scary it can be to take the first step. To post your work. To charge money. To price correctly. To speak with clients. To handle pressure. To know whether you’re truly making a profit. And to say out loud, “Yes, I’m building a business.”</p>
+            <p class="lang-he">אני יודעת כמה זה קשה להגשים חלום. אני יודעת איך זה מרגיש כשיש לך כישרון, אהבה לאפייה ותשוקה גדולה — אבל אין לך שיטה, אין לך מספיק ביטחון, אין לך ידע עסקי, ולפעמים גם אין מי שמאמין בזה יחד איתך.</p>
+            <p class="lang-he">אני יודעת כמה מפחיד לעשות את הצעד הראשון. לפרסם. לקחת כסף. לתמחר נכון. לדבר עם לקוחות. להתמודד עם עומס. להבין אם את מרוויחה באמת. ולהגיד בקול: “כן, אני בונה עסק.”</p>
+          </div>
+          <div class="mission-block reveal">
+            <p class="eyebrow lang-en">What Aviya Patisserie Helps You Do</p>
+            <p class="eyebrow lang-he">איך Aviya Patisserie עוזרת לך</p>
+            <p class="lang-en">That’s exactly why I created Aviya Patisserie — Home Bakery Business Academy.</p>
+            <p class="lang-en">I want to give you what I didn’t have when I started: a clear path, practical tools, knowledge, structure, confidence, and guidance. My goal is to help you make your dream happen faster, more efficiently, and with more clarity — without having to learn everything only through mistakes and setbacks.</p>
+            <p class="lang-en">I’m here to help you understand what to sell, how to price it, how to package it, how to photograph it, how to market yourself, how to communicate with clients, how to work efficiently in the kitchen, and how to turn your talent into a real business that makes money.</p>
+            <p class="lang-he">בדיוק בשביל זה הקמתי את Aviya Patisserie — Home Bakery Business Academy.</p>
+            <p class="lang-he">אני רוצה לתת לך את מה שלי לא היה בתחילת הדרך: דרך ברורה, כלים מעשיים, ידע, סדר, ביטחון וליווי. המטרה שלי היא לעזור לך להגשים את החלום שלך בצורה מהירה יותר, יעילה יותר ומסודרת יותר — בלי שתצטרכי ללמוד הכול רק מנפילות וטעויות.</p>
+            <p class="lang-he">אני כאן כדי לעזור לך להבין מה למכור, איך לתמחר, איך לארוז, איך לצלם, איך לשווק, איך לדבר עם לקוחות, איך להתנהל נכון במטבח ואיך להפוך את הכישרון שלך לעסק אמיתי שמרוויח.</p>
+            <p class="lang-en">At Aviya Patisserie, you’ll find a complete business toolkit:</p>
+            <ul class="toolkit-list lang-en">
+              <li>Israeli-style recipes</li>
+              <li>U.S. ingredient adaptations</li>
+              <li>pricing tools</li>
+              <li>organization templates</li>
+              <li>photography and marketing guides</li>
+              <li>client communication scripts</li>
+              <li>personal mentorship</li>
+              <li>branding</li>
+              <li>logo design</li>
+              <li>website services</li>
+            </ul>
+            <p class="lang-he">ב־Aviya Patisserie תמצאי מעטפת מלאה:</p>
+            <ul class="toolkit-list lang-he">
+              <li>מתכונים ישראליים</li>
+              <li>התאמות לחומרי גלם בארה״ב</li>
+              <li>כלי תמחור</li>
+              <li>טבלאות ארגון</li>
+              <li>מדריכי צילום ושיווק</li>
+              <li>תבניות להתנהלות מול לקוחות</li>
+              <li>ליווי אישי</li>
+              <li>מיתוג</li>
+              <li>לוגו ובניית אתר</li>
+            </ul>
+          </div>
+          <div class="mission-block reveal">
+            <p class="eyebrow lang-en">I Believe In You</p>
+            <p class="eyebrow lang-he">אני מאמינה בך</p>
+            <p class="lang-en">I want every woman who comes here to feel that she is not alone. That someone understands her fear. That someone knows the journey from the inside. That someone knows how hard it can be — but also knows that it’s possible.</p>
+            <p class="lang-en">I believe in you. I believe in your talent. I believe your dream can become a profitable business. And I’m here to help you take your love for baking and turn it into something real, professional, organized, and profitable.</p>
+            <p class="lang-he">אני רוצה שכל אישה שנכנסת לכאן תרגיש שהיא לא לבד. שיש מישהי שמבינה את הפחד שלה. שמכירה את הדרך מבפנים. שיודעת כמה זה קשה — אבל גם יודעת שזה אפשרי.</p>
+            <p class="lang-he">אני מאמינה בך. אני מאמינה בכישרון שלך. אני מאמינה שהחלום שלך יכול להפוך לעסק מרוויח. ואני כאן כדי לעזור לך לקחת את האהבה שלך לאפייה ולהפוך אותה למשהו אמיתי, מקצועי, מסודר ורווחי.</p>
+          </div>
+        </div>
+
+        <div class="mission-block--vision reveal">
+          <p class="eyebrow lang-en">My Vision</p>
+          <p class="eyebrow lang-he">החזון שלי</p>
+          <p class="lang-en">My vision is to help you bake with passion, sell with confidence, and build a business you’re truly proud of.</p>
+          <p class="lang-he">החזון שלי הוא לעזור לך לאפות באהבה, למכור בביטחון, ולבנות עסק שאת באמת גאה בו.</p>
+        </div>
+
+        <p class="mission-note lang-en">We serve clients mainly in the United States, and proudly also serve Israel and Jewish/Israeli communities worldwide.</p>
+        <p class="mission-note lang-he">אני משרתת לקוחות בעיקר בארצות הברית, ובגאווה גם בישראל ובקהילות יהודיות-ישראליות ברחבי העולם.</p>
+        </div>
+        <div class="reveal" style="order:1;">
+                     <div class="img-placeholder" role="img" aria-label="founder photo- aviya patisserie" style="background-image: url('images/aviya1.png'); background-size: cover; background-position: center;">
+
+            <span class="lang-en">Placeholder: mission photo</span><span class="lang-he">מקום לתמונת המשימה</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">Why Aviya Patisserie</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">למה Aviya Patisserie</p>
+          <h2 class="lang-en">Everything I learned the hard way — now becomes tools for you</h2>
+          <h2 class="lang-he">כל מה שלמדתי בדרך הקשה — עכשיו הופך לכלים בשבילך</h2>
+        </div>
+        <div class="grid grid-4">
+          <div class="card reveal">
+            <h3 class="small lang-en">12 years of experience</h3>
+            <h3 class="small lang-he">12 שנות ניסיון מוכחות</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Original recipes</h3>
+            <h3 class="small lang-he">מתכונים מקוריים שלי</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">U.S. ingredient adaptations</h3>
+            <h3 class="small lang-he">התאמות לחומרי גלם אמריקאיים</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Practical business tools</h3>
+            <h3 class="small lang-he">כלים עסקיים מעשיים</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Mistakes Turned Into a Method</h3>
+            <h3 class="small lang-he">טעויות שהפכו לשיטה</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Personal mentorship</h3>
+            <h3 class="small lang-he">ליווי אישי בגובה העיניים</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Support for beginners &amp; existing bakers</h3>
+            <h3 class="small lang-he">תמיכה למתחילות ולאופות ותיקות</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Real Experience From the Field</h3>
+            <h3 class="small lang-he">ניסיון אמיתי מהשטח</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">A Clear Path to Start and Grow</h3>
+            <h3 class="small lang-he">דרך ברורה להתחיל ולצמוח</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Marketing, Pricing & Business Structure</h3>
+            <h3 class="small lang-he">שיווק, תמחור וסדר בעסק</h3>
+          </div><div class="card reveal">
+            <h3 class="small lang-en">Saving You Years of Trial and Error</h3>
+            <h3 class="small lang-he">חוסכת לך שנים של ניסוי וטעייה</h3>
+          </div><div class="card reveal">
+            <h3 class="small lang-en">From Home Kitchen to Profitable Business</h3>
+            <h3 class="small lang-he">מהמטבח הביתי לעסק רווחי</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--blush">
+      <div class="container">
+        <div class="cta-banner reveal">
+          <h2 class="lang-en">Let's build your bakery business together</h2>
+          <h2 class="lang-he">בואי נבנה יחד את עסק האפייה שלך</h2>
+          <p class="lang-en">Whether you're just starting out or ready to grow, I'd love to help you get there.</p>
+          <p class="lang-he">בין אם את רק מתחילה ובין אם את מוכנה לצמוח, אשמח לעזור לך להגיע לשם.</p>
+          <div class="btn-row"><a href="contact.html" class="btn btn-gold"><span class="lang-en">Start Your Home Bakery
+                Journey</span><span class="lang-he">התחילי את הדרך שלך</span></a></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand" style="color:var(--ivory);">Aviya Patisserie</div>
+          <p class="lang-en">Home Bakery Business Academy — helping women turn their baking dream into an organized,
+            profitable home bakery business.</p>
+          <p class="lang-he">האקדמיה לעסקי אפייה מהבית — עוזרת לנשים להפוך את חלום האפייה שלהן לעסק אפייה ביתי מאורגן
+            ורווחי.</p>
+        </div>
+        <div>
+          <h4 class="lang-en">Explore</h4>
+          <h4 class="lang-he">ניווט</h4>
+          <ul>
+            <li><a href="digital-products.html"><span class="lang-en">Digital Products</span><span
+                  class="lang-he">מוצרים דיגיטליים</span></a></li>
+            <li><a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי
+                  אישי</span></a></li>
+            <li><a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמה
+                  מלאה</span></a></li>
+            <li><a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span
+                  class="lang-he">מיתוג ואתרים</span></a></li>
+            <li><a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+                  חינם</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Company</h4>
+          <h4 class="lang-he">החברה</h4>
+          <ul>
+            <li><a href="about.html"><span class="lang-en">About Aviya</span><span class="lang-he">אודות אביה</span></a>
+            </li>
+            <li><a href="contact.html"><span class="lang-en">Contact / Apply</span><span class="lang-he">צרי קשר /
+                  הרשמה</span></a></li>
+            <li><a href="legal.html"><span class="lang-en">Legal &amp; Policies</span><span class="lang-he">תנאים
+                  ומדיניות</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Connect</h4>
+          <h4 class="lang-he">בואי נתחבר</h4>
+          <ul>
+            <li><a>Aviya.patisserie@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/aviya.patisserie?igsh=MTN5endpODNoZXkyZQ==" target="_blank"
+                rel="noopener"><span class="lang-en">Instagram</span><span class="lang-he">אינסטגרם</span></a></li>
+            <li><a href="https://www.facebook.com/share/17By1hmKSk/" target="_blank" rel="noopener"><span
+                  class="lang-en">Facebook</span><span class="lang-he">פייסבוק</span></a></li>
+            <li><a href="https://wa.link/f8jt2z" target="_blank" rel="noopener"><span
+                  class="lang-en">WhatsApp</span><span class="lang-he">וואטסאפ</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span class="lang-en">&copy; <span data-year></span> Aviya Patisserie. All rights reserved.</span><span
+            class="lang-he">&copy; <span data-year></span> Aviya Patisserie. כל הזכויות שמורות.</span></p>
+        <p class="lang-en">Educational content only — not legal, tax, or food-licensing advice. See <a href="legal.html"
+            style="text-decoration:underline;">Legal &amp; Policies</a>.</p>
+        <p class="lang-he">תוכן חינוכי בלבד — אינו ייעוץ משפטי, מס או רישוי מזון. ראי <a href="legal.html"
+            style="text-decoration:underline;">תנאים ומדיניות</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=final-mobile-2"></script>
+</body>
+
+</html>

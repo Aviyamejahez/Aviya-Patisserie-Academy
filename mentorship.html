@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+<script>
+  /* Apply saved language IMMEDIATELY, before first paint, so the page never
+     flashes the wrong language/direction while script.js is still loading
+     (this was the main cause of the Hebrew "blank on load" issue). This is
+     safe even if localStorage is empty/unavailable — script.js re-applies
+     the same logic on DOMContentLoaded regardless. */
+  (function(){
+    try{
+      var l = localStorage.getItem("aviya-lang");
+      if(l === "he" || l === "en"){
+        document.documentElement.setAttribute("lang", l);
+        document.documentElement.setAttribute("dir", l === "he" ? "rtl" : "ltr");
+      }
+    }catch(e){}
+  })();
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentorship — Aviya Patisserie</title>
+  <meta name="description"
+    content="One-on-one mentorship for home bakers: pricing, clients, workflow, marketing, and the confidence to grow your business.">
+  <meta property="og:title" content="Mentorship — Aviya Patisserie">
+  <meta property="og:description" content="Personal mentorship for aspiring and existing home bakers.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@400;600;700&family=Assistant:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=final-mobile-2">
+</head>
+
+<body>
+  <a class="skip-link" href="#main"><span class="lang-en">Skip to content</span><span class="lang-he">דלגי
+      לתוכן</span></a>
+
+  <header class="site-header">
+    <div class="nav container">
+      <a href="index.html" class="brand">Aviya Patisserie<span class="lang-en">Home Bakery Business Academy</span><span
+          class="lang-he">האקדמיה לעסקי אפייה מהבית</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html"><span class="lang-en">Home</span><span class="lang-he">בית</span></a>
+        <a href="digital-products.html"><span class="lang-en">Digital Products</span><span class="lang-he">מוצרים
+            דיגיטליים</span></a>
+        <a href="mentorship.html" aria-current="page"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי
+            אישי</span></a>
+        <a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמת עסק מלא</span></a>
+        <a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span class="lang-he">מיתוג
+            ואתרים</span></a>
+        <a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+            חינם</span></a>
+        <a href="about.html"><span class="lang-en">About</span><span class="lang-he">אודות</span></a>
+        <a href="contact.html"><span class="lang-en">Contact</span><span class="lang-he">צרי קשר</span></a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language switch">
+          <button data-lang-btn="en" aria-pressed="true">EN</button>
+          <button data-lang-btn="he" aria-pressed="false">HE</button>
+        </div>
+        <a href="contact.html" class="btn btn-gold btn-sm"><span class="lang-en">Apply Now</span><span
+            class="lang-he">להרשמה</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow lang-en" style="justify-content:center;">One-on-One Guidance</p>
+        <p class="eyebrow lang-he" style="justify-content:center;">ליווי אישי אחד-על-אחד</p>
+        <h1 class="lang-en">Mentorship for home bakers who want to grow</h1>
+        <h1 class="lang-he">ליווי אישי לאופות ביתיות שרוצות לצמוח</h1>
+        <p class="lang-en">Personal consulting on pricing, clients, kitchen workflow, marketing, and — most of all — the
+          confidence to run your business like a business.</p>
+        <p class="lang-he">ייעוץ אישי בנושאי תמחור, לקוחות, ניהול עבודה במטבח, שיווק, ומעל הכול — הביטחון לנהל את העסק
+          שלך כמו עסק.</p>
+        <div class="btn-row" style="justify-content:center;">
+          <a href="contact.html" class="btn btn-primary"><span class="lang-en">Apply for Mentorship</span>
+            <span class="lang-he">להגשת בקשה לליווי</span></a>
+          <a href="contact.html" class="btn btn-outline"><span class="lang-en">Book a Consultation</span>
+            <span class="lang-he">לתיאום שיחת ייעוץ</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TOPICS ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">What We Cover</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">מה כולל הליווי</p>
+          <h2 class="lang-en">Mentorship Topics</h2>
+          <h2 class="lang-he">נושאי הליווי</h2>
+        </div>
+        <div class="grid grid-4">
+          <div class="card reveal">
+            <h3 class="small lang-en">How to start selling cakes from home</h3>
+            <h3 class="small lang-he">איך להתחיל למכור עוגות מהבית</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">How to build a menu</h3>
+            <h3 class="small lang-he">איך לבנות תפריט</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Pricing and profitability</h3>
+            <h3 class="small lang-he">תמחור ורווחיות</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">How to talk to clients</h3>
+            <h3 class="small lang-he">איך לדבר עם לקוחות</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">How to receive orders</h3>
+            <h3 class="small lang-he">איך לקבל הזמנות</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Kitchen workflow &amp; efficiency</h3>
+            <h3 class="small lang-he">ניהול עבודה ויעילות במטבח</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Motivation and confidence</h3>
+            <h3 class="small lang-he">מוטיבציה וביטחון עצמי</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Social media marketing</h3>
+            <h3 class="small lang-he">שיווק ברשתות חברתיות</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Product photography</h3>
+            <h3 class="small lang-he">צילום מוצר</h3>
+          </div>
+          <div class="card reveal">
+            <h3 class="small lang-en">Organizing a home bakery business</h3>
+            <h3 class="small lang-he">ארגון עסק אפייה ביתי</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PACKAGES ============ -->
+    <section class="section section--alt">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">Choose the mentorship level that fits your current
+            business stage</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">בחרי את הליווי שמתאים לשלב שבו העסק שלך נמצא</p>
+          <h2 class="lang-en">Whether you’re just starting to sell or ready to grow, each mentorship package is designed
+            to give you clarity, confidence, and practical tools to move forward.</h2>
+          <h2 class="lang-he">בין אם את רק מתחילה למכור או כבר רוצה לצמוח — הליווי נבנה כדי לתת לך סדר, ביטחון וכלים
+            מעשיים להתקדם נכון.</h2>
+          <p class="lang-en">Pricing is customized to your goals during your consultation. The ranges below are a
+            starting guide.</p>
+          <p class="lang-he">התמחור מותאם אישית למטרות שלך במהלך שיחת הייעוץ. הטווחים שלהלן הם הנחיה ראשונית.</p>
+        </div>
+
+        <div class="grid grid-3">
+          <div class="card pricing-card reveal">
+            <h3 class="lang-en">Starter Mentorship</h3>
+            <h3 class="lang-he">ליווי התחלתי</h3>
+            <p class="price lang-en"><!--<small>Starting at &nbsp; --></small>$199</p>
+            <p class="price lang-he"><!--<small>החל מ־ &nbsp; --></small>$199</p>
+            <p class="small muted lang-en">For women just beginning to sell — build your foundation with clarity.</p>
+            <p class="small muted lang-he">לנשים שרוצות להתחיל למכור בצורה מסודרת ובטוחה.</p>
+            <ul>
+              <li><span class="lang-en">1 focused consultation call</span><span class="lang-he">שיחת ייעוץ ממוקדת
+                  אחת</span></li>
+              <li><span class="lang-en">Choosing your first products to sell</span><span class="lang-he">בחירת מוצרים
+                  ראשונים למכירה</span></li>
+              <li><span class="lang-en">Basic pricing review</span><span class="lang-he">סקירת תמחור בסיסית</span></li>
+              <li><span class="lang-en">Simple order process guidance</span><span class="lang-he">סדר ראשוני לתהליך
+                  הזמנות</span></li>
+              <li><span class="lang-en">Clear summary after the call</span><span class="lang-he">סיכום ברור לאחר
+                  השיחה</span></li>
+            </ul>
+            <a href="contact.html" class="btn btn-outline btn-block"><span class="lang-en">Apply for
+                Mentorship</span><span class="lang-he">להגשת בקשה</span></a>
+
+          </div>
+
+          <div class="card pricing-card featured reveal">
+            <span class="featured-tag lang-en">Most Popular</span><span class="featured-tag lang-he">הכי פופולרי</span>
+            <h3 class="lang-en">Growth Mentorship</h3>
+            <h3 class="lang-he">ליווי לצמיחה</h3>
+            <p class="price lang-en"><small>Starting at &nbsp; </small>$249 <small>/ month</small></p>
+            <p class="price lang-he"><small>החל מ־ &nbsp;</small>$249 <small>/ לחודש</small></p>
+            
+            <p class="small muted lang-en">For home bakers who already sell and want to become more organized,
+              professional, and profitable.</p>
+            <p class="small muted lang-he">לאופות שכבר מוכרות ורוצות להפוך את העסק למסודר, מקצועי ורווחי יותר.</p>
+            <ul>
+              <li><span class="lang-en">Weekly one-on-one calls</span><span class="lang-he">שיחות אחד־על־אחד
+                  שבועיות</span>
+              </li>
+              <li><span class="lang-en">Menu &amp; pricing strategy</span><span class="lang-he">אסטרטגיית תפריט
+                  ותמחור</span></li>
+              <li><span class="lang-en">Improving your order process</span><span class="lang-he">שיפור תהליך
+                  הזמנות</span></li>
+              <li><span class="lang-en">Ongoing email support</span><span class="lang-he">תמיכה שוטפת במייל</span></li>
+              <li><span class="lang-en">Marketing &amp; promotion guidance</span><span class="lang-he">הדרכת שיווק
+                  ופרסום</span></li>
+              <li><span class="lang-en">Ongoing support during the month</span><span class="lang-he">תמיכה שוטפת במהלך
+                  החודש</span></li>
+            </ul>
+            <a href="contact.html" class="btn btn-primary btn-block"><span class="lang-en">Apply for
+                Mentorship</span><span class="lang-he">להגשת בקשה</span></a>
+          </div>
+
+          <div class="card pricing-card reveal">
+            <h3 class="lang-en">Premium Mentorship</h3>
+            <h3 class="lang-he">ליווי פרימיום</h3>
+            <p class="price lang-en"><small>Starting at &nbsp; </small>$449 <small>/ month</small></p>
+            <p class="price lang-he"><small>החל מ־ &nbsp;</small>$449 <small>/ לחודש</small></p>
+            <p class="small muted lang-en">A deeper personal mentorship for home bakers who want to build a strong,
+              clear, and growth-ready business.</p>
+            <p class="small muted lang-he">מעטפת אישית ומעמיקה לאופות שרוצות לבנות עסק חזק, ברור ומוכן לצמיחה.</p>
+            <ul>
+              <li><span class="lang-en">Extended 1:1 mentorship</span><span class="lang-he">ליווי אישי מורחב</span></li>
+              <li><span class="lang-en">Full business review</span><span class="lang-he">סקירה עסקית מלאה</span></li>
+              <li><span class="lang-en">Custom action plan</span><span class="lang-he">בניית תוכנית פעולה מותאמת</span>
+              </li>
+              <li><span class="lang-en">Pricing, menu &amp; systems improvement</span><span class="lang-he">שיפור תמחור,
+                  תפריט ומערכות</span>
+              <li><span class="lang-en">Support with business &amp; marketing decisions</span><span
+                  class="lang-he">ליווי בהחלטות עסקיות ושיווקיות</span>
+              </li>
+            </ul>
+            <a href="contact.html" class="btn btn-outline btn-block"><span class="lang-en">Apply for
+                Mentorship</span><span class="lang-he">להגשת בקשה</span></a>
+          </div>
+        </div>
+
+        <p class="note reveal lang-en" style="max-width:680px; margin:32px auto 0; text-align:center;">
+          <strong>Note:</strong> Premium services require a signed service agreement before work begins.<br>
+          Final pricing depends on your business needs, mentorship level, and support scope.
+        </p>
+
+        <p class="note reveal lang-he" style="max-width:680px; margin:32px auto 0; text-align:center;">
+          <span style="display: inline-block; text-align: left; direction: rtl;">
+            <strong>הערה:</strong> שירותי פרימיום דורשים הסכם שירות חתום לפני תחילת העבודה.<br>
+            המחיר הסופי יקבע על פי צרכי העסק, רמת הליווי והיקף התמיכה.
+          </span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow lang-en" style="justify-content:center;">Simple Process</p>
+          <p class="eyebrow lang-he" style="justify-content:center;">תהליך פשוט</p>
+          <h2 class="lang-en">How Mentorship Works</h2>
+          <h2 class="lang-he">איך הליווי עובד</h2>
+        </div>
+        <div class="steps reveal">
+          <div class="step">
+            <div class="num">1</div>
+            <h4 class="lang-en">Apply</h4>
+            <h4 class="lang-he">הגישי בקשה</h4>
+            <p class="lang-en">Fill out a short application so we understand your goals.</p>
+            <p class="lang-he">מלאי בקשה קצרה כדי שנבין את המטרות שלך.</p>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <h4 class="lang-en">Consultation</h4>
+            <h4 class="lang-he">שיחת ייעוץ</h4>
+            <p class="lang-en">We talk through where you are and where you want to go.</p>
+            <p class="lang-he">נדבר על איפה את נמצאת ולאן את רוצה להגיע.</p>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <h4 class="lang-en">Agreement</h4>
+            <h4 class="lang-he">הסכם</h4>
+            <p class="lang-en">We confirm your package and sign a service agreement.</p>
+            <p class="lang-he">נסכם על החבילה ונחתום על הסכם שירות.</p>
+          </div>
+          <div class="step">
+            <div class="num">4</div>
+            <h4 class="lang-en">Mentorship begins</h4>
+            <h4 class="lang-he">הליווי מתחיל</h4>
+            <p class="lang-en">We get to work on your goals, together.</p>
+            <p class="lang-he">נתחיל לעבוד יחד על המטרות שלך.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--blush">
+      <div class="container">
+        <div class="cta-banner reveal">
+          <h2 class="lang-en">Ready to stop guessing and start growing?</h2>
+          <h2 class="lang-he">מוכנה להפסיק לנחש ולהתחיל לצמוח?</h2>
+          <p class="lang-en">Apply today and let's build a plan that fits your kitchen, your time, and your goals.</p>
+          <p class="lang-he">הגישי בקשה היום ונבנה יחד תוכנית שמתאימה למטבח שלך, לזמן שלך ולמטרות שלך.</p>
+          <div class="btn-row"><a href="contact.html" class="btn btn-gold"><span class="lang-en">Apply for
+                Mentorship</span><span class="lang-he">להגשת בקשה לליווי</span></a></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand" style="color:var(--ivory);">Aviya Patisserie</div>
+          <p class="lang-en">Home Bakery Business Academy — helping women turn their baking dream into an organized,
+            profitable home bakery business.</p>
+          <p class="lang-he">האקדמיה לעסקי אפייה מהבית — עוזרת לנשים להפוך את חלום האפייה שלהן לעסק אפייה ביתי מאורגן
+            ורווחי.</p>
+        </div>
+        <div>
+          <h4 class="lang-en">Explore</h4>
+          <h4 class="lang-he">ניווט</h4>
+          <ul>
+            <li><a href="digital-products.html"><span class="lang-en">Digital Products</span><span
+                  class="lang-he">מוצרים דיגיטליים</span></a></li>
+            <li><a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי
+                  אישי</span></a></li>
+            <li><a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמה
+                  מלאה</span></a></li>
+            <li><a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span
+                  class="lang-he">מיתוג ואתרים</span></a></li>
+            <li><a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+                  חינם</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Company</h4>
+          <h4 class="lang-he">החברה</h4>
+          <ul>
+            <li><a href="about.html"><span class="lang-en">About Aviya</span><span class="lang-he">אודות אביה</span></a>
+            </li>
+            <li><a href="contact.html"><span class="lang-en">Contact / Apply</span><span class="lang-he">צרי קשר /
+                  הרשמה</span></a></li>
+            <li><a href="legal.html"><span class="lang-en">Legal &amp; Policies</span><span class="lang-he">תנאים
+                  ומדיניות</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Connect</h4>
+          <h4 class="lang-he">בואי נתחבר</h4>
+          <ul>
+            <li><a>Aviya.patisserie@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/aviya.patisserie?igsh=MTN5endpODNoZXkyZQ==" target="_blank"
+                rel="noopener"><span class="lang-en">Instagram</span><span class="lang-he">אינסטגרם</span></a></li>
+            <li><a href="https://www.facebook.com/share/17By1hmKSk/" target="_blank" rel="noopener"><span
+                  class="lang-en">Facebook</span><span class="lang-he">פייסבוק</span></a></li>
+            <li><a href="https://wa.link/f8jt2z" target="_blank" rel="noopener"><span
+                  class="lang-en">WhatsApp</span><span class="lang-he">וואטסאפ</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span class="lang-en">&copy; <span data-year></span> Aviya Patisserie. All rights reserved.</span><span
+            class="lang-he">&copy; <span data-year></span> Aviya Patisserie. כל הזכויות שמורות.</span></p>
+        <p class="lang-en">Educational content only — not legal, tax, or food-licensing advice. See <a href="legal.html"
+            style="text-decoration:underline;">Legal &amp; Policies</a>.</p>
+        <p class="lang-he">תוכן חינוכי בלבד — אינו ייעוץ משפטי, מס או רישוי מזון. ראי <a href="legal.html"
+            style="text-decoration:underline;">תנאים ומדיניות</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=final-mobile-2"></script>
+</body>
+
+</html>

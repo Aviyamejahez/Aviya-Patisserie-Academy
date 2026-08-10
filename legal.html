@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <script>
+    /* Apply saved language IMMEDIATELY, before first paint, so the page never
+       flashes the wrong language/direction while script.js is still loading
+       (this was the main cause of the Hebrew "blank on load" issue). This is
+       safe even if localStorage is empty/unavailable — script.js re-applies
+       the same logic on DOMContentLoaded regardless. */
+    (function () {
+      try {
+        var l = localStorage.getItem("aviya-lang");
+        if (l === "he" || l === "en") {
+          document.documentElement.setAttribute("lang", l);
+          document.documentElement.setAttribute("dir", l === "he" ? "rtl" : "ltr");
+        }
+      } catch (e) { }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal / Terms &amp; Policies — Aviya Patisserie</title>
+  <meta name="description"
+    content="Terms of use, digital product license, privacy policy, refund policy, and disclaimers for Aviya Patisserie.">
+  <meta property="og:title" content="Legal / Terms &amp; Policies — Aviya Patisserie">
+  <meta property="og:description" content="Terms, privacy, refund policy and disclaimers in one place.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@400;600;700&family=Assistant:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=final-mobile-3">
+</head>
+
+<body>
+  <a class="skip-link" href="#main"><span class="lang-en">Skip to content</span><span class="lang-he">דלגי
+      לתוכן</span></a>
+
+  <header class="site-header">
+    <div class="nav container">
+      <a href="index.html" class="brand">Aviya Patisserie<span class="lang-en">Home Bakery Business Academy</span><span
+          class="lang-he">האקדמיה לעסקי אפייה מהבית</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html"><span class="lang-en">Home</span><span class="lang-he">בית</span></a>
+        <a href="digital-products.html"><span class="lang-en">Digital Products</span><span class="lang-he">מוצרים
+            דיגיטליים</span></a>
+        <a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי אישי</span></a>
+        <a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמת עסק מלא</span></a>
+        <a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span class="lang-he">מיתוג
+            ואתרים</span></a>
+        <a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+            חינם</span></a>
+        <a href="about.html"><span class="lang-en">About</span><span class="lang-he">אודות</span></a>
+        <a href="contact.html"><span class="lang-en">Contact</span><span class="lang-he">צרי קשר</span></a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language switch">
+          <button data-lang-btn="en" aria-pressed="true">EN</button>
+          <button data-lang-btn="he" aria-pressed="false">HE</button>
+        </div>
+        <a href="contact.html" class="btn btn-gold btn-sm"><span class="lang-en">Apply Now</span><span
+            class="lang-he">להרשמה</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow lang-en" style="justify-content:center;">Please Read Carefully</p>
+        <p class="eyebrow lang-he" style="justify-content:center;">נא לקרוא בעיון</p>
+        <h1 class="lang-en">Legal / Terms &amp; Policies</h1>
+        <h1 class="lang-he">תנאים ומדיניות</h1>
+        <p class="legal-meta lang-en">Effective date: 01.01.2028 · Business email: Aviya.patisserie@gmail.com</p>
+        <p class="legal-meta lang-he">תאריך תוקף: 01.01.2028 · דוא"ל העסק: Aviya.patisserie@gmail.com</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container" style="max-width:880px;">
+
+        <nav class="legal-nav" aria-label="Legal sections">
+          <a href="#terms"><span class="lang-en">Terms of Use</span><span class="lang-he">תנאי שימוש</span></a>
+          <a href="#license"><span class="lang-en">Digital Product License</span><span class="lang-he">רישיון מוצר
+              דיגיטלי</span></a>
+          <a href="#privacy"><span class="lang-en">Privacy Policy</span><span class="lang-he">מדיניות פרטיות</span></a>
+          <a href="#refund"><span class="lang-en">Refund Policy</span><span class="lang-he">מדיניות החזרים</span></a>
+          <a href="#disclaimer"><span class="lang-en">Disclaimer</span><span class="lang-he">הצהרת אחריות</span></a>
+          <a href="#responsibility"><span class="lang-en">Client Responsibility</span><span class="lang-he">אחריות
+              הלקוחה</span></a>
+          <a href="#no-advice"><span class="lang-en">No Legal/Tax/Licensing Advice</span><span class="lang-he">אין ייעוץ
+              משפטי/מס/רישוי</span></a>
+          <a href="#copyright"><span class="lang-en">Copyright &amp; Content Protection</span><span
+              class="lang-he">זכויות יוצרים והגנת תוכן</span></a>
+          <a href="#delivery"><span class="lang-en">Delivery Notice</span><span class="lang-he">הודעת מסירה</span></a>
+          <a href="#payment"><span class="lang-en">Payment Terms</span><span class="lang-he">תנאי תשלום</span></a>
+          <a href="#service-contract"><span class="lang-en">Service Contract Notice</span><span class="lang-he">הודעת
+              הסכם שירות</span></a>
+          <a href="#age"><span class="lang-en">Parent/Guardian Approval</span><span class="lang-he">אישור
+              הורה/אפוטרופוס</span></a>
+          <a href="#agreement-text"><span class="lang-en">Purchase Agreement Wording</span><span class="lang-he">נוסח
+              הסכם רכישה</span></a>
+        </nav>
+
+        <div class="legal-section" id="terms">
+          <h2 class="lang-en">Terms of Use</h2>
+          <h2 class="lang-he">תנאי שימוש</h2>
+          <p class="lang-en">By using this website, purchasing digital products, or engaging any Aviya Patisserie
+            service, you agree to these Terms &amp; Policies. If you do not agree, please do not use this website or
+            purchase our products or services.</p>
+          <p class="lang-he">בשימוש באתר זה, ברכישת מוצרים דיגיטליים או בהתקשרות עם כל שירות של Aviya Patisserie, את
+            מסכימה לתנאים ולמדיניות הללו. אם אינך מסכימה, נא לא להשתמש באתר או לרכוש את המוצרים או השירותים שלנו.</p>
+          <p class="lang-en">Aviya Patisserie may update these Terms &amp; Policies from time to time. Continued use of
+            the website after changes are posted means you accept the updated terms.</p>
+          <p class="lang-he">Aviya Patisserie רשאית לעדכן תנאים ומדיניות אלו מעת לעת. המשך שימוש באתר לאחר פרסום שינויים
+            מהווה הסכמה לתנאים המעודכנים.</p>
+        </div>
+
+        <div class="legal-section" id="license">
+          <h2 class="lang-en">Digital Product License</h2>
+          <h2 class="lang-he">רישיון מוצר דיגיטלי</h2>
+          <p class="lang-en">Digital products (recipes, templates, guides, spreadsheets, and all educational materials)
+            are for your personal business use only.</p>
+          <p class="lang-he">מוצרים דיגיטליים (מתכונים, תבניות, מדריכים, גיליונות אלקטרוניים וכל החומרים החינוכיים)
+            מיועדים לשימוש עסקי אישי בלבד.</p>
+          <ul>
+            <li><span class="lang-en">You may not copy, share, resell, distribute, upload, transfer, teach, or reproduce
+                these materials.</span><span class="lang-he">אין להעתיק, לשתף, למכור מחדש, להפיץ, להעלות, להעביר, ללמד
+                או לשכפל חומרים אלו.</span></li>
+            <li><span class="lang-en">Recipes, templates, guides, spreadsheets, and all educational materials are
+                protected content.</span><span class="lang-he">מתכונים, תבניות, מדריכים, גיליונות וכל החומרים החינוכיים
+                הם תוכן מוגן.</span></li>
+            <li><span class="lang-en">You may use recipes to bake and sell finished baked goods as part of your own
+                business.</span><span class="lang-he">ניתן להשתמש במתכונים לאפייה ומכירה של מוצרי מאפה מוגמרים כחלק
+                מהעסק שלך.</span></li>
+          </ul>
+        </div>
+
+        <div class="legal-section" id="privacy">
+          <h2 class="lang-en">Privacy Policy</h2>
+          <h2 class="lang-he">מדיניות פרטיות</h2>
+          <p class="lang-en">We may collect personal data — such as your name, email address, and communication details
+            — through website forms, email, PayPal, and other communication tools.</p>
+          <p class="lang-he">אנו עשויות לאסוף מידע אישי — כגון שם, כתובת דוא"ל ופרטי תקשורת — באמצעות טפסים באתר, מייל,
+            PayPal וכלי תקשורת נוספים.</p>
+          <p class="lang-en">This data is used for purchase delivery, customer support, service communication, and
+            business records. We do not sell your personal data.</p>
+          <p class="lang-he">מידע זה משמש למסירת רכישות, תמיכת לקוחות, תקשורת בנוגע לשירות ורישומים עסקיים. אנו לא
+            מוכרות את המידע האישי שלך.</p>
+          <p class="lang-en">Third-party tools we use (such as PayPal, email providers, and form providers) have their
+            own privacy practices, which we encourage you to review.</p>
+          <p class="lang-he">לכלים חיצוניים שבהם אנו משתמשות (כגון PayPal, ספקי דוא"ל וספקי טפסים) יש מדיניות פרטיות
+            משלהם, ואנו ממליצות לעיין בהם.</p>
+        </div>
+
+        <div class="legal-section" id="refund">
+          <h2 class="lang-en">Refund Policy</h2>
+          <h2 class="lang-he">מדיניות החזרים</h2>
+          <p class="lang-en">Digital products are non-refundable once delivered, unless otherwise stated in writing.
+            Because digital products are delivered manually by email, please make sure your email address is entered
+            correctly at checkout.</p>
+          <p class="lang-he">מוצרים דיגיטליים אינם ניתנים להחזר לאחר המסירה, אלא אם צוין אחרת בכתב. מכיוון שמוצרים
+            דיגיטליים נמסרים ידנית במייל, נא לוודא שכתובת הדוא"ל הוזנה נכון בתשלום.</p>
+          <p class="lang-en">Refunds for premium services (mentorship, Full Setup, branding, or website services) are
+            governed by the individual signed service agreement for that service.</p>
+          <p class="lang-he">החזרים עבור שירותי פרימיום (ליווי, הקמה מלאה, מיתוג או שירותי אתרים) כפופים להסכם השירות
+            החתום הספציפי לאותו שירות.</p>
+        </div>
+
+        <div class="legal-section" id="disclaimer">
+          <h2 class="lang-en">Disclaimer</h2>
+          <h2 class="lang-he">הצהרת אחריות</h2>
+          <p class="lang-en">All content on this website — including recipes, templates, guides, and mentorship — is
+            provided for educational and informational purposes only. Results vary based on individual effort, market,
+            location, and many other factors outside our control. We make no guarantee of income, sales, or business
+            success.</p>
+          <p class="lang-he">כל התוכן באתר זה — כולל מתכונים, תבניות, מדריכים וליווי — ניתן למטרות חינוכיות
+            ואינפורמטיביות בלבד. התוצאות משתנות בהתאם למאמץ אישי, שוק, מיקום וגורמים רבים נוספים שאינם בשליטתנו. איננו
+            מתחייבות להכנסה, מכירות או הצלחה עסקית.</p>
+        </div>
+
+        <div class="legal-section" id="responsibility">
+          <h2 class="lang-en">Client Responsibility</h2>
+          <h2 class="lang-he">אחריות הלקוחה</h2>
+          <p class="lang-en">You are responsible for checking and following the home bakery, cottage food, tax, business
+            licensing, and food safety regulations in your own country, state, city, or county before selling any food
+            product.</p>
+          <p class="lang-he">את/ה אחראי/ת לבדוק ולפעול לפי חוקי האפייה הביתית, ה-cottage food, המס, רישוי העסקים ובטיחות
+            המזון במדינה, המחוז, העיר או הקהילה שלך, לפני מכירת כל מוצר מזון.</p>
+          <p class="lang-en">You are also responsible for the safe preparation, handling, and delivery of any food you
+            sell, and for maintaining any required permits or licenses.</p>
+          <p class="lang-he">את/ה אחראי/ת גם להכנה, טיפול ומסירה בטוחים של כל מזון שאת/ה מוכר/ת, ולשמירה על כל היתר או
+            רישיון נדרש.</p>
+        </div>
+
+        <div class="legal-section" id="no-advice">
+          <h2 class="lang-en">No Legal, Tax, Food Regulation, or Business Licensing Advice</h2>
+          <h2 class="lang-he">אין ייעוץ משפטי, מס, רגולציית מזון או רישוי עסקי</h2>
+          <p class="lang-en">Aviya Patisserie does not provide legal, tax, accounting, food safety, licensing, or
+            regulatory advice. Nothing on this website or in our products, mentorship, or services should be understood
+            as such advice.</p>
+          <p class="lang-he">Aviya Patisserie אינה מספקת ייעוץ משפטי, מס, ראיית חשבון, בטיחות מזון, רישוי או רגולציה.
+            שום דבר באתר זה או במוצרים, בליווי או בשירותים שלנו אינו מהווה ייעוץ כאמור.</p>
+          <p class="lang-en">Please consult a qualified attorney, accountant, or your local health department for advice
+            specific to your situation.</p>
+          <p class="lang-he">נא להתייעץ עם עורך דין מוסמך, רואה חשבון או משרד הבריאות המקומי לקבלת ייעוץ המותאם למצבך.
+          </p>
+        </div>
+
+        <div class="legal-section" id="copyright">
+          <h2 class="lang-en">Copyright &amp; Content Protection</h2>
+          <h2 class="lang-he">זכויות יוצרים והגנת תוכן</h2>
+          <p class="lang-en">All content on this website and in our digital products — including text, recipes,
+            templates, designs, and images — is the property of Aviya Patisserie and is protected by copyright.
+            Unauthorized copying, distribution, or reproduction is prohibited.</p>
+          <p class="lang-he">כל התוכן באתר זה ובמוצרים הדיגיטליים שלנו — כולל טקסט, מתכונים, תבניות, עיצובים ותמונות —
+            הוא רכושה של Aviya Patisserie ומוגן בזכויות יוצרים. העתקה, הפצה או שכפול ללא אישור אסורים.</p>
+        </div>
+
+        <div class="legal-section" id="delivery">
+          <h2 class="lang-en">Manual Digital Product Delivery Notice</h2>
+          <h2 class="lang-he">הודעת מסירה ידנית של מוצרים דיגיטליים</h2>
+          <p class="lang-en">Digital products are delivered manually by email after payment confirmation — not by
+            instant download. Delivery times may vary. Please confirm the purchase terms checkbox before payment, and
+            double-check your email address for accuracy.</p>
+          <p class="lang-he">מוצרים דיגיטליים נשלחים ידנית במייל לאחר אישור התשלום — לא כהורדה מיידית. זמני המסירה
+            עשויים להשתנות. נא לאשר את תיבת תנאי הרכישה לפני התשלום, ולוודא שכתובת הדוא"ל נכונה.</p>
+        </div>
+
+        <div class="legal-section" id="payment">
+          <h2 class="lang-en">Payment Terms</h2>
+          <h2 class="lang-he">תנאי תשלום</h2>
+          <p class="lang-en">Digital products are paid for via PayPal after confirming the purchase terms checkbox at
+            checkout. Premium services (mentorship, Full Setup, branding, and website services) may require a deposit
+            and follow a custom payment schedule defined in the signed service agreement.</p>
+          <p class="lang-he">מוצרים דיגיטליים משולמים דרך PayPal לאחר אישור תיבת תנאי הרכישה בתשלום. שירותי פרימיום
+            (ליווי, הקמה מלאה, מיתוג ושירותי אתרים) עשויים לדרוש מקדמה ולפעול לפי לוח תשלומים מותאם אישית שמוגדר בהסכם
+            השירות החתום.</p>
+        </div>
+
+        <div class="legal-section" id="service-contract">
+          <h2 class="lang-en">Service Contract Notice</h2>
+          <h2 class="lang-he">הודעת הסכם שירות</h2>
+          <p class="lang-en">Premium services require a signed service agreement before work begins. This includes
+            mentorship packages, the Full Home Bakery Business Setup, and branding/website services. The signed
+            agreement will outline the specific scope, price, timeline, and terms for your service.</p>
+          <p class="lang-he">שירותי פרימיום דורשים הסכם שירות חתום לפני תחילת העבודה. זה כולל חבילות ליווי, הקמת עסק
+            אפייה ביתי מלאה ושירותי מיתוג/אתרים. ההסכם החתום יפרט את היקף העבודה, המחיר, לוח הזמנים והתנאים הספציפיים
+            לשירות שלך.</p>
+        </div>
+
+        <div class="legal-section" id="age">
+          <h2 class="lang-en">Parent/Guardian Approval Notice Where Required</h2>
+          <h2 class="lang-he">הודעת אישור הורה/אפוטרופוס במקרים הנדרשים</h2>
+          <p class="lang-en">Purchases, paid services, and contracts must be completed by an adult, or with
+            parent/guardian approval where required by law. Educational resources may be suitable for various ages, but
+            any financial transaction or signed agreement must be completed by someone of legal age, or with appropriate
+            parental/guardian consent.</p>
+          <p class="lang-he">רכישות, שירותים בתשלום והסכמים יש להשלים על ידי בגיר/ה, או באישור הורה/אפוטרופוס במקרים
+            הנדרשים על פי חוק. משאבים חינוכיים עשויים להתאים לגילאים שונים, אך כל עסקה כספית או הסכם חתום חייבים להתבצע
+            על ידי אדם בגיל חוקי, או באישור הורה/אפוטרופוס מתאים.</p>
+        </div>
+
+        <div class="legal-section" id="agreement-text">
+          <h2 class="lang-en">Purchase Agreement Wording (for reference)</h2>
+          <h2 class="lang-he">נוסח הסכם רכישה (לעיון)</h2>
+          <p class="lang-en">The text below is the full purchase terms you agree to when you check the purchase
+            terms box at checkout on any product page. The checkbox itself shows a short version with a link back to
+            this page; the full wording is shown here for transparency:</p>
+          <p class="lang-he">הטקסט שלהלן הוא נוסח תנאי הרכישה המלא שאת מסכימה לו כאשר את מסמנת את תיבת תנאי הרכישה
+            בתשלום, בכל עמוד מוצר. תיבת הסימון עצמה מציגה נוסח מקוצר עם קישור חזרה לעמוד זה; הנוסח המלא מוצג כאן
+            לשקיפות:</p>
+          <div class="note lang-en">
+            By purchasing this digital product, I confirm that I understand the materials provided by Aviya Patisserie
+            are for my personal business use only. I agree not to copy, share, distribute, resell, upload, teach,
+            reproduce, or transfer these materials to any other person, group, platform, or business. I understand that
+            recipes, templates, guides, spreadsheets, and educational materials are protected content. I understand that
+            this purchase does not include legal, tax, accounting, licensing, food safety, or regulatory advice. I am
+            responsible for checking and following the laws, cottage food rules, health regulations, tax rules, and
+            business requirements in my own country, state, city, or county. I understand that digital products are
+            manually delivered by email after payment confirmation. I understand that digital products are
+            non-refundable once delivered, unless otherwise stated in writing. I confirm that purchases, paid services,
+            and contracts must be completed by an adult or with parent/guardian approval where required. I confirm that
+            I have read and agree to these terms.
+          </div>
+          <div class="note lang-he">
+            ברכישת מוצר דיגיטלי זה, אני מאשרת שאני מבינה כי החומרים המסופקים על ידי Aviya Patisserie מיועדים לשימוש עסקי
+            אישי שלי בלבד. אני מסכימה שלא להעתיק, לשתף, להפיץ, למכור מחדש, להעלות, ללמד, לשכפל או להעביר חומרים אלו לכל
+            אדם, קבוצה, פלטפורמה או עסק אחר. אני מבינה שמתכונים, תבניות, מדריכים, גיליונות אלקטרוניים וחומרים חינוכיים
+            הם תוכן מוגן. אני מבינה שרכישה זו אינה כוללת ייעוץ משפטי, מס, ראיית חשבון, רישוי, בטיחות מזון או רגולציה.
+            אני אחראית לבדוק ולפעול לפי החוקים, כללי ה-cottage food, תקנות הבריאות, כללי המס ודרישות העסק במדינה, המחוז,
+            העיר או הקהילה שלי. אני מבינה שמוצרים דיגיטליים נשלחים ידנית במייל לאחר אישור התשלום. אני מבינה שמוצרים
+            דיגיטליים אינם ניתנים להחזר לאחר המסירה, אלא אם צוין אחרת בכתב. אני מאשרת שרכישות, שירותים בתשלום והסכמים יש
+            להשלים באמצעות בגיר/ה או באישור הורה/אפוטרופוס במקרים הנדרשים. אני מאשרת שקראתי והסכמתי לתנאים אלו.
+          </div>
+          <p class="small muted lang-en">The short version of this text appears in the purchase terms checkbox on
+            every product page at checkout.</p>
+          <p class="small muted lang-he">הנוסח המקוצר של הטקסט הזה מופיע בתיבת תנאי הרכישה בכל עמוד מוצר, בעת
+            התשלום.</p>
+        </div>
+
+        <div class="legal-section" style="border-top:1px solid var(--line);padding-top:32px;">
+          <p class="legal-meta lang-en"><strong>Business email:</strong> Aviya.patisserie@gmail.com &nbsp;|&nbsp; <strong>Effective
+              date:</strong>01.01.2028 <br></p>
+          <p class="legal-meta lang-he"><strong>דוא"ל העסק:</strong> Aviya.patisserie@gmail.com &nbsp;|&nbsp; <strong>תאריך
+              תוקף:</strong> 01.01.2028 <br></p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand" style="color:var(--ivory);">Aviya Patisserie</div>
+          <p class="lang-en">Home Bakery Business Academy — helping women turn their baking dream into an organized,
+            profitable home bakery business.</p>
+          <p class="lang-he">האקדמיה לעסקי אפייה מהבית — עוזרת לנשים להפוך את חלום האפייה שלהן לעסק אפייה ביתי מאורגן
+            ורווחי.</p>
+        </div>
+        <div>
+          <h4 class="lang-en">Explore</h4>
+          <h4 class="lang-he">ניווט</h4>
+          <ul>
+            <li><a href="digital-products.html"><span class="lang-en">Digital Products</span><span
+                  class="lang-he">מוצרים דיגיטליים</span></a></li>
+            <li><a href="mentorship.html"><span class="lang-en">Mentorship</span><span class="lang-he">ליווי
+                  אישי</span></a></li>
+            <li><a href="full-setup.html"><span class="lang-en">Full Setup</span><span class="lang-he">הקמה
+                  מלאה</span></a></li>
+            <li><a href="branding-websites.html"><span class="lang-en">Branding &amp; Websites</span><span
+                  class="lang-he">מיתוג ואתרים</span></a></li>
+            <li><a href="free-resources.html"><span class="lang-en">Free Resources</span><span class="lang-he">משאבים
+                  חינם</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Company</h4>
+          <h4 class="lang-he">החברה</h4>
+          <ul>
+            <li><a href="about.html"><span class="lang-en">About Aviya</span><span class="lang-he">אודות אביה</span></a>
+            </li>
+            <li><a href="contact.html"><span class="lang-en">Contact / Apply</span><span class="lang-he">צרי קשר /
+                  הרשמה</span></a></li>
+            <li><a href="legal.html"><span class="lang-en">Legal &amp; Policies</span><span class="lang-he">תנאים
+                  ומדיניות</span></a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="lang-en">Connect</h4>
+          <h4 class="lang-he">בואי נתחבר</h4>
+          <ul>
+            <li><a>Aviya.patisserie@gmail.com</a></li>
+            <li><a href="https://www.instagram.com/aviya.patisserie?igsh=MTN5endpODNoZXkyZQ==" target="_blank"
+                rel="noopener"><span class="lang-en">Instagram</span><span class="lang-he">אינסטגרם</span></a></li>
+            <li><a href="https://www.facebook.com/share/17By1hmKSk/" target="_blank" rel="noopener"><span
+                  class="lang-en">Facebook</span><span class="lang-he">פייסבוק</span></a></li>
+            <li><a href="https://wa.link/f8jt2z" target="_blank" rel="noopener"><span
+                  class="lang-en">WhatsApp</span><span class="lang-he">וואטסאפ</span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p><span class="lang-en">&copy; <span data-year></span> Aviya Patisserie. All rights reserved.</span><span
+            class="lang-he">&copy; <span data-year></span> Aviya Patisserie. כל הזכויות שמורות.</span></p>
+        <p class="lang-en">Educational content only — not legal, tax, or food-licensing advice. See <a href="legal.html"
+            style="text-decoration:underline;">Legal &amp; Policies</a>.</p>
+        <p class="lang-he">תוכן חינוכי בלבד — אינו ייעוץ משפטי, מס או רישוי מזון. ראי <a href="legal.html"
+            style="text-decoration:underline;">תנאים ומדיניות</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=final-mobile-3"></script>
+</body>
+
+</html>
