@@ -4,4 +4,36 @@
     <loc>https://aviya-patisserie-academy.com/</loc>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/about.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/contact.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/mentorship.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/digital-products.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/free-resources.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/branding-websites.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/full-setup.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aviya-patisserie-academy.com/legal.html</loc>
+    <priority>0.3</priority>
+  </url>
 </urlset>
